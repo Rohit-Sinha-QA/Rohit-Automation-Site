@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../icon.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>About Us</title>
+    <style>
+        body {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(57, 255, 143, 0.06), transparent 40%),
+                radial-gradient(circle at 88% 92%, rgba(79, 209, 255, 0.05), transparent 40%),
+                #05070a;
+            margin: 0;
+            color: #e6edf3;
+        }
+        /* Header Styles */
+        header {
+            width: 100%;
+            background: #0a0e14;
+            color: #e6edf3;
+            padding: 16px 40px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-bottom: 1px solid #1f2b38;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        header h1 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+        }
+        header h1::before {
+            content: "> ";
+            color: #39ff8f;
+        }
+
+        main {
+            max-width: 760px;
+            width: 100%;
+            margin: 120px auto 80px;
+            background: #0f141b;
+            border: 1px solid #1f2b38;
+            padding: 40px 48px;
+            border-radius: 12px;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 24px 64px -24px rgba(0, 0, 0, 0.7);
+        }
+        main h2 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #e6edf3;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 32px 0 10px;
+        }
+        main h2:first-of-type {
+            margin-top: 0;
+        }
+        p {
+            margin-bottom: 15px;
+            color: #8b9bb0;
+            font-size: 15px;
+        }
+        ul {
+            list-style-type: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #8b9bb0;
+            font-size: 15px;
+        }
+        ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #39ff8f;
+        }
+        main a {
+            color: #4fd1ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        main a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About Us</h1>
+    </header>
+    <main>
+        <h2>Our Mission</h2>
+        <p>We are dedicated to providing quality automation practice platform. Our goal is to make lear testing a smoother process.</p>
+
+        <h2>Our Story</h2>
+        <p>We started in 2024 with a simple idea: To have an application having all types of webelements where everyone can practice different automation tools. We're proud of our journey and excited for the future.</p>
+
+        <h2>What We Offer</h2>
+        <ul>
+            <li>Best ui/ux experience</li>
+            <li>All Webelements for automation practice</li>
+            <li>Cheat codes in different tools and languages</li>
+            <li>Lifetime free access once registered</li>
+        </ul>
+
+        <h2>Our Team</h2>
+        <p>We have a passionate team of experts who are committed to make your learning process smoother and easier. Meet some of our key members:</p>
+        <ul>
+            <li>Rohit Sinha - Founder</li>
+            <li>Shambhavi Verma - Co-founder</li>
+        </ul>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions or would like to learn more, please contact us at: <a href="mailto:info@example.com">rohitautomation@gmail.com</a></p>
+        <p style="font-size: 13px; color: #566373; margin-top: 32px;">&copy; 2025 https://rohit-automation.netlify.app/</p>
+    </main>
+    
+</body>
+</html>

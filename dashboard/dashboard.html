@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dashboardStyle.css">
+    <link rel="icon" type="image/png" href="../icon.jpg">
+    <link rel="preload" href="dashboardImage.jpg" as="image">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="dashboardScript.js" defer></script>
+
+</head>
+<body>
+
+<header>
+    <h1>Dashboard</h1>
+    <nav>
+        <!-- <a href="../about/about.html">About</a> -->
+        <a href="../contact/contact.html">Contact</a>
+        <a href="../index.html">Log Out</a>
+    </nav>
+</header>
+<div class="login-container">
+    <div class="login-box">
+<div class="container mt-5">
+    <h3 class="mb-3" style="width: 750px; margin-left: 10px;">Automation Practice Webelements</h3>
+    <form id="registrationForm">
+
+        <!-- Input Box: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <div class="icon-container">
+                <i class="fas fa-info-circle me-2 info-icon"></i>
+                <div class="options-container">
+                    <div class="option" onclick="loadTextFile('selenium-java.txt')">Selenium-Java Code</div>
+                    <div class="option" onclick="loadTextFile('selenium-python.txt')">Selenium-Python Code</div>
+                    <div class="option" onclick="loadTextFile('cypress-js.txt')">Cypress-JavaScript Code</div>
+                </div>
+            </div>
+            <label class="form-label me-2">Input Box:</label>
+            <input type="text" id="idtextbox1" class="form-control" style="width: 590px; margin-left: -10px;" placeholder="Type Something...">
+        </div>
+        <!-- Popup Modal -->
+        <div class="overlay" id="overlay" onclick="closePopup()"></div>
+            <div class="popup" id="popup">
+                <h3 id="popup-title"></h3>
+                <!-- Copy Button -->
+                <button class="copy-btn" style="margin-left: 1px; margin-bottom: 10px; background-color: #39ff8f; color: #04140a; border: none; font-family: 'JetBrains Mono', monospace; font-weight: 700;" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <pre id="popup-text"></pre>
+            <button onclick="closePopup()">Close</button>
+        </div>
+        
+        <!-- Radio Button: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label" >Radio Button:</label>
+            <div>
+                <input type="radio" id="idradiobutton1" name="gender" value="Male" > Male
+                <input type="radio" id="idradiobutton2" name="gender" value="Female" style="margin-left: 20px;"> Female
+                <input type="radio" id="idradiobutton3" name="gender" value="Other" style="margin-left: 20px;" disabled> Other
+            </div>
+        </div>
+
+        <!-- Checkbox: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Checkbox:</label><br>
+            <input type="checkbox" id="idcheckbox1" name="hobbies" value="Sports"> Sports
+            <input type="checkbox" id="idcheckbox2" name="hobbies" value="Reading" style="margin-left: 20px;"> Reading
+            <input type="checkbox" id="idcheckbox3" name="hobbies" value="Music" style="margin-left: 20px;"> Music
+        </div>
+
+        <!-- Static Dropdown: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Static Dropdown:</label><br>
+            <select id="state" class="form-select me-2" style="width: 600px;"> 
+                <option selected>Select State</option>
+                <option value="AP">Andhra Pradesh</option>
+                <option value="Arunachal P">Arunachal Pradesh</option>
+                <option value="Asm">Assam</option>
+                <option value="Br">Bihar</option>
+                <option value="Chgarh">Chhattisgarh</option>
+                <option value="Goa">Goa</option>
+                <option value="Guj">Gujarat</option>
+                <option value="Hary">Haryana</option>
+                <option value="HP">Himachal Pradesh</option>
+                <option value="Jhar">Jharkhand</option>
+                <option value="Karna">Karnataka</option>
+                <option value="Ker">Kerala</option>
+                <option value="MP">Madhya Pradesh</option>
+                <option value="Mahara">Maharashtra</option>
+                <option value="Mani">Manipur</option>
+                <option value="Megha">Meghalaya</option>
+                <option value="Mizo">Mizoram</option>
+                <option value="Naga">Nagaland</option>
+                <option value="Odis">Odisha</option>
+                <option value="Punj">Punjab</option>
+                <option value="Rajas">Rajasthan</option>
+                <option value="Sik">Sikkim</option>
+                <option value="TN">Tamil Nadu</option>
+                <option value="Telan">Telangana</option>
+                <option value="Trip">Tripura</option>
+                <option value="UP">Uttar Pradesh</option>
+                <option value="Uttara">Uttarakhand</option>
+                <option value="WB">West Bengal</option>
+                <option value="Andam">Andaman and Nicobar Islands</option>
+                <option value="Chandi">Chandigarh</option>
+                <option value="Laksha">Lakshadweep</option>
+                <option value="Del">Delhi</option>
+                <option value="JK">Jammu and Kashmir</option>
+                <option value="Lad">Ladakh</option>
+            </select>
+        </div>
+
+        <!-- Span Dropdown: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+        <i class="fas fa-info-circle me-2 info-icon"></i>
+        <label class="form-label">Span&nbsp; Dropdown:</label><br>
+        <div class="custom-dropdown">
+        <span class="selected">Select State</span>
+        <ul class="dropdown-options">
+            <li data-value="AP">Andhra Pradesh</li>
+            <li data-value="Arunachal P">Arunachal Pradesh</li>
+            <li data-value="Asm">Assam</li>
+            <li data-value="Br">Bihar</li>
+            <li data-value="Chgarh">Chhattisgarh</li>
+            <li data-value="Goa">Goa</li>
+            <li data-value="Guj">Gujarat</li>
+            <li data-value="Hary">Haryana</li>
+            <li data-value="HP">Himachal Pradesh</li>
+            <li data-value="Jhar">Jharkhand</li>
+            <li data-value="Karna">Karnataka</li>
+            <li data-value="Ker">Kerala</li>
+            <li data-value="MP">Madhya Pradesh</li>
+            <li data-value="Mahara">Maharashtra</li>
+            <li data-value="Mani">Manipur</li>
+            <li data-value="Megha">Meghalaya</li>
+            <li data-value="Mizo">Mizoram</li>
+            <li data-value="Naga">Nagaland</li>
+            <li data-value="Odis">Odisha</li>
+            <li data-value="Punj">Punjab</li>
+            <li data-value="Rajas">Rajasthan</li>
+            <li data-value="Sik">Sikkim</li>
+            <li data-value="TN">Tamil Nadu</li>
+            <li data-value="Telan">Telangana</li>
+            <li data-value="Trip">Tripura</li>
+            <li data-value="UP">Uttar Pradesh</li>
+            <li data-value="Uttara">Uttarakhand</li>
+            <li data-value="WB">West Bengal</li>
+            <li data-value="Andam">Andaman and Nicobar Islands</li>
+            <li data-value="Chandi">Chandigarh</li>
+            <li data-value="Laksha">Lakshadweep</li>
+            <li data-value="Del">Delhi</li>
+            <li data-value="JK">Jammu and Kashmir</li>
+            <li data-value="Lad">Ladakh</li>
+        </ul>
+        </div>
+        </div>
+
+        <style>
+            .custom-dropdown {
+                position: relative;
+                display: inline-block;
+                width: 600px;
+                cursor: pointer;
+                border: 1px solid #1f2b38;
+                background: #0a0e14;
+                padding: 8px 10px;
+                border-radius: 8px;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 14px;
+                color: #e6edf3;
+            }
+            .selected {
+                display: block;
+                padding: 5px;
+                cursor: pointer;
+            }
+            .dropdown-options {
+                display: none;
+                position: absolute;
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+                background: #131a23;
+                border: 1px solid #1f2b38;
+                border-radius: 8px;
+                list-style: none;
+                padding: 0;
+                margin: 4px 0 0;
+                z-index: 10;
+                box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.75);
+            }
+            .dropdown-options li {
+                padding: 9px 12px;
+                cursor: pointer;
+                font-size: 14px;
+                color: #e6edf3;
+                transition: 0.15s;
+            }
+            .dropdown-options li:hover {
+                background: rgba(57, 255, 143, 0.16);
+                color: #39ff8f;
+            }
+            .show {
+                display: block;
+            }
+        </style>
+
+        <!-- Dynamic Dropdown: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Dynamic Dropdown:</label>
+            <div class="autocomplete">
+                <input type="text" id="searchBox" class="form-select me-2" style="width: 600px;" placeholder="Type and Select State">
+                <ul class="suggestions" id="suggestionsList"></ul>
+            </div>
+        </div>
+        
+        <!-- Date Picker: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Date Picker:</label>
+            <input type="date" id="datePicker" class="form-control" style="width: 600px;">
+        </div>
+
+        <!-- File Upload: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">File Upload:</label>
+            <input type="file" id="idfileupload" class="form-control" style="width: 600px;">
+        </div>
+
+        <!-- Multiple File Upload: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Multiple File Upload:</label>
+            <!-- Upload Button -->
+            <button id="uploadBtn" class="btn btn-primary">Upload Here</button>
+            <!-- Hidden File Input -->
+            <input type="file" id="fileInput" multiple>
+            <!-- Uploaded File List -->
+            <ul id="fileList" class="list-group mt-3"></ul>
+        </div>
+    
+        <script>
+            const uploadBtn = document.getElementById("uploadBtn");
+            const fileInput = document.getElementById("fileInput");
+            const fileList = document.getElementById("fileList");
+    
+            // Open file selection dialog on button click
+            uploadBtn.addEventListener("click", () => fileInput.click());
+    
+            // Handle file selection and display names
+            fileInput.addEventListener("change", () => {
+                fileList.innerHTML = ""; // Clear previous file list
+                Array.from(fileInput.files).forEach((file) => {
+                    const li = document.createElement("li");
+                    li.textContent = file.name;
+                    li.classList.add("list-group-item");
+                    fileList.appendChild(li);
+                });
+            });
+        </script>
+
+        <!-- Label and Info Icon (Main DOM) -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Shadow Dom:</label>
+
+            <!-- Shadow DOM Host -->
+            <div id="shadow-host"></div> 
+        </div>
+        <script>
+            // Select the shadow host
+            const host = document.getElementById("shadow-host");
+
+            // Attach a shadow DOM to the host
+            const shadow = host.attachShadow({ mode: "open" });
+
+            // Create an input element
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "Enter text here...";
+            input.style.padding = "10px";
+            input.style.border = "1px solid #1f2b38";
+            input.style.borderRadius = "8px";
+            input.style.fontSize = "14px";
+            input.style.fontFamily = "'JetBrains Mono', monospace";
+            input.style.background = "#0a0e14";
+            input.style.color = "#e6edf3";
+
+            // Append input inside shadow DOM
+            shadow.appendChild(input);
+        </script>
+        
+        <!-- Alert Example: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Alert Example:</label>
+            <button id="idalert" onclick="showOkAlert()">Show OK Alert</button>
+            <button id="idalert" onclick="showConfirmAlert()" style="margin-left: 30px;">Show Confirm Alert</button>
+            <button id="idalert" onclick="showPromptAlert()" style="margin-left: 30px;">Show Prompt Alert</button>
+            <p id="message"></p>
+        </div>
+
+        <!-- Mouse Hover: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px; position: relative;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Mouse Hover:</label>
+            <div style="position: relative;">
+                <button id="hoverBtn" type="button" class="hover-button">Hover over this button</button>
+                <p id="text" class="hover-text">This text appears on hover!</p>
+            </div>
+        </div>
+
+        <!-- Double Click: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Double Click:</label>
+            <button id="dblClick" type="button" class="hover-button" ondblclick="showText()">Double Click this button</button>
+        <p id="dclick" style="display: none;">This text appears on double-click!</p>
+        </div>
+
+        <!-- Right Click: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Right Click:</label>
+            <button id="rightClick" type="button" class="hover-button">Right Click this button</button>
+            <p id="rclick" style="display: none;">This text appears on right-click!</p>
+        </div>
+
+        <!-- Slider -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label" for="slider">Adjust Slider:</label>
+            <input type="range" id="slider" min="0" max="100" value="50" class="slider" style="width: 300px; height: 8px; margin-right: 10px;">
+            <p id="sliderValue">Value: 50</p>
+        </div>
+
+        <!-- Resizable -->
+         <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label" for="resizableBox">Resize Me:</label>
+            <div id="resizableBox">
+                Resize this box
+                <div class="resizer"></div>
+            </div>
+        </div>
+        <style>
+            #resizableBox {
+            width: 300px;
+            height: 100px;
+            background-color: #0a0e14;
+            border: 1px solid #1f2b38;
+            border-radius: 8px;
+            position: relative;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: #8b9bb0;
+            }
+
+            /* Resize handle */
+            .resizer {
+            width: 14px;
+            height: 14px;
+            background: #39ff8f;
+            border-radius: 3px 0 8px 0;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            cursor: se-resize;
+            }
+        </style>
+
+        <!-- Draggable -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Draggable:</label>
+            <div id="draggable" class="draggable" draggable="true">Drag Me</div>
+            <div style="width: 30px;"></div>
+            <div id="droppable" class="droppable">Drop Here</div>
+        </div>
+
+        <!-- Iframe -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Iframe:</label>
+            <iframe id="iframe-id" name="iframe-name" src="https://rohit-automation.netlify.app/" width="500" height="200" style="border:1px solid black;">
+                Your browser does not support iframes.
+            </iframe>
+        </div>
+
+        <!-- Hide and Show -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Hide and Show:</label>
+            <input id="show-textbox" class="btn-style class2" value="Show" onclick="showElement()" style="width: 80px; height: 40px; margin-right: 50px;" type="button">
+            <input id="hide-textbox" class="btn-style class2" value="Hide" onclick="hideElement()" style="width: 80px; height: 40px; margin-right: 20px;" type="button">
+            <br><br>
+            <!-- Textbox to Show/Hide -->
+            <input id="displayed-text" class="inputs displayed-class" 
+            placeholder="Hey, I am visible" type="text" style="display: none; width: 160px; height: 30px">
+        </div>
+
+        <!-- Dynamic Xpath: -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label me-2">Dynamic Xpath:</label>
+            <input type="text" id="" name="" style="width: 500px; margin-left: -10px;" placeholder="Type Something...">
+        </div>
+
+        <!-- Webtable -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">WebTable:</label>
+            <a href="https://rohit-automation.netlify.app/webtable" id="idwebtable" class="new-tab">Click to open webtable page</a>
+        </div>
+
+        <!-- New Tab -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">New Tab:</label>
+            <a href="https://rohit-automation.netlify.app/" target="_blank" id="idnewtab" class="new-tab">Click to open new tab</a>
+        </div>
+
+        <!-- New Window -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">New Window:</label>
+            <a href="#" id="idnewwindow" class="new-tab" onclick="openNewWindow()">Click to open new window</a>
+        </div> 
+
+        <!-- Bad SSL -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Bad SSL:</label>
+            <a id="idbadssl" href="https://expired.badssl.com/" class="new-tab">Click to open Bad SSL Website</a>
+        </div>
+
+        <!-- Wait Visible -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Wait Visible:</label>
+            <button id="WaitVisible" type="button" class="hover-button">Click this button</button>
+            <div id="textContainer"></div> <!-- Text will be added here after 7s -->
+        </div>
+
+        <script>
+            const button1 = document.getElementById("WaitVisible");
+            const container = document.getElementById("textContainer");
+
+            button1.addEventListener("click", function () {
+                container.innerHTML = ""; // Clear old message if any
+                setTimeout(() => {
+                    const textEl = document.createElement("p");
+                    textEl.id = "delayText";
+                    textEl.style.marginLeft = "10px";
+                    textEl.style.marginTop = "10px";
+                    textEl.style.color = "#39ff8f";
+                    textEl.style.fontWeight = "600";
+                    textEl.innerText = "Sorry, I am late !!!!!";
+                    container.appendChild(textEl);
+                }, 4000);
+            });
+        </script>
+
+
+        <!-- Wait Clickable -->
+        <div class="mb-3 d-flex align-items-center" style="padding-bottom: 20px;">
+            <i class="fas fa-info-circle me-2 info-icon"></i>
+            <label class="form-label">Wait Clickable:</label>
+            <button id="enableRadioBtn" type="button" class="hover-button">Click me to enable</button>
+
+            <div style="margin-left: 15px;">
+                <input type="radio" id="delayedRadio" disabled style="transform: scale(2); cursor: not-allowed;">
+            </div>
+        </div>
+
+        <script>
+            const enableBtn = document.getElementById("enableRadioBtn");
+            const delayedRadio = document.getElementById("delayedRadio");
+
+            enableBtn.addEventListener("click", function () {
+                delayedRadio.disabled = true; // make sure it's disabled first
+                setTimeout(() => {
+                    delayedRadio.disabled = false; // enable after 5 seconds
+                }, 7000);
+            });
+        </script>
+         
+    </form>
+</div>
+</div>
+</div>
+</body>
+</html>

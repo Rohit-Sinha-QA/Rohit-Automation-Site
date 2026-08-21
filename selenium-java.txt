@@ -1,0 +1,36 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class SeleniumInputTest {
+    public static void main(String[] args) {
+        // Set up ChromeDriver path (Ensure chromedriver is in your system PATH)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+
+        // Initialize WebDriver
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            // Open the webpage
+            driver.get("https://rohit-automation.netlify.app/dashboard");
+
+            // Maximize browser window
+            driver.manage().window().maximize();
+
+            // Locate input box (Modify selector as per actual HTML)
+            WebElement inputBox = driver.findElement(By.id("inputBoxId")); // Change ID accordingly
+
+            // Type text into the input box
+            inputBox.sendKeys("Hello, Selenium!");
+
+            // Wait for some time (Optional, just for visualization)
+            Thread.sleep(3000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the browser
+            driver.quit();
+        }
+    }
+}

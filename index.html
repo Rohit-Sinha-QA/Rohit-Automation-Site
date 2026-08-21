@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="indexStyle.css">
+    <script src="indexScript.js" defer></script>
+    <link rel="icon" type="image/png" href="icon.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>Welcome To Automation With Rohit</h2>
+                <p style="font-size: 12px; color: rgb(139, 155, 176);">All-In-One place for Automation Practice</p>
+            </div>
+            <form id="loginForm">
+                <div class="user-type">
+                    <label>User Type:</label>
+                    <input type="radio" id="employee" name="userType" value="Employee" style="margin-top: 1px; margin-right: -5px;" checked>
+                    <label for="employee">Employee</label>
+                    <input type="radio" id="student" name="userType" value="Student" style="margin-top: 1px; margin-right: -5px;">
+                    <label for="student">Student</label>
+                </div>
+                <div class="input-group">
+                    <label for="user">Email</label>
+                    <input type="text" id="user" name="username" placeholder="&#x2709; Enter your email" required autocomplete="off">
+                </div>
+                <div class="input-group password-container">
+                    <label for="pass">Password</label>
+                    <input type="password" id="pass" name="password" placeholder="&#x1F512; Enter your password" required autocomplete="off">
+                    <span id="togglePassword" class="toggle-icon">&#128065;</span>
+                </div>
+                <div class="forgot-password">
+                    <a href="forgotPassword.html" id="forgotPasswordLink" style="font-size: 16px;">Forgot password?</a> </div>
+                <button type="submit" class="login-button">Login</button>
+                <div id="error-message" class="error-message"></div>
+            </form>
+            <div class="register-link">
+                <p>Not registered? <a href="./signupPage/signup.html">Create an account</a></p>
+            </div>
+            <div class="social-login">
+                <p class="or-text">Or sign in with</p>
+                <div class="social-icons">
+                    <a href="https://www.google.com/" class="social-icon google-icon" target="_blank">G</a>
+                    <a href="https://www.facebook.com/" class="social-icon facebook-icon" target="_blank">f</a>
+                    <a href="https://www.twitter.com/" class="social-icon apple-icon" target="_blank">X</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
