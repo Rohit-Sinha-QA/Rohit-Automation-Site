@@ -1,6 +1,11 @@
 {
-  "dependencies": {
-    "basic-auth": "^2.0.1",
-    "express": "^4.21.2"
-  }
+  "name": "rohit-automation-site",
+  "version": "2.0.0",
+  "description": "Automation With Rohit - practice web app and REST API for Selenium, Cypress, Playwright and Postman training",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": { "node": ">=18" }
 }

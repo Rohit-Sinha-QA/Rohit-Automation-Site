@@ -1,0 +1,60 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  included_files = ["server/**", "public/dashboard/AuthPage.html"]
+
+# The API and the basic-auth page run inside the Netlify function.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/basic-auth"
+  to = "/.netlify/functions/api/basic-auth"
+  status = 200
+  force = true
+
+# Friendly page URLs
+[[redirects]]
+  from = "/login"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/signup"
+  to = "/signupPage/signup.html"
+  status = 200
+[[redirects]]
+  from = "/forgot-password"
+  to = "/forgotPassword/forgotPassword.html"
+  status = 200
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard/dashboard.html"
+  status = 200
+[[redirects]]
+  from = "/webtable"
+  to = "/webTable.html"
+  status = 200
+[[redirects]]
+  from = "/contact"
+  to = "/contact/contact.html"
+  status = 200
+[[redirects]]
+  from = "/about"
+  to = "/about/about.html"
+  status = 200
+[[redirects]]
+  from = "/store"
+  to = "/store/store.html"
+  status = 200
+[[redirects]]
+  from = "/cart"
+  to = "/store/cart.html"
+  status = 200
+[[redirects]]
+  from = "/checkout"
+  to = "/store/checkout.html"
+  status = 200

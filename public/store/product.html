@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Product Details | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/store.js" defer></script>
+</head>
+<body data-page="store" data-title="Product Details">
+<main class="content" id="content">
+  <a href="/store/store.html" id="backToProducts" class="btn btn-ghost btn-sm mb-2" data-testid="back-to-products">← Back to products</a>
+  <div id="productNotFound" class="card hidden"><div class="empty-state"><h2>Product not found</h2><p>No product exists with this id.</p></div></div>
+  <section class="card hidden" id="productDetail" data-testid="product-detail">
+    <div class="card-body grid-2" style="align-items:center">
+      <img id="productImage" src="" alt="" style="width:100%;border-radius:12px;aspect-ratio:4/3;object-fit:cover">
+      <div>
+        <span class="badge" id="productCategory"></span>
+        <h1 id="productName" class="mt-1"></h1>
+        <div id="productRating"></div>
+        <p id="productDescription" class="muted mt-1"></p>
+        <div class="price" id="productPrice" style="font-size:28px;font-weight:700"></div>
+        <p id="productStock" class="small"></p>
+        <div class="row mt-2">
+          <div class="qty"><button type="button" id="detailMinus" aria-label="Decrease quantity">−</button><input id="detailQty" value="1" aria-label="Quantity" inputmode="numeric"><button type="button" id="detailPlus" aria-label="Increase quantity">+</button></div>
+          <button type="button" class="btn btn-primary" id="addToCartDetail" data-testid="add-to-cart">Add to cart</button>
+          <a href="/store/cart.html" class="btn btn-secondary" id="goToCart">Go to cart (<span data-cart-count>0</span>)</a>
+        </div>
+        <p id="addedMessage" class="result-text mt-1"></p>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const $ = (id) => document.getElementById(id);
+  const id = new URLSearchParams(location.search).get("id");
+  const p = id ? await Store.product(id) : null;
+  if (!p) { $("productNotFound").classList.remove("hidden"); return; }
+  document.title = p.name + " | Automation With Rohit";
+  $("productDetail").classList.remove("hidden");
+  $("productImage").src = p.image; $("productImage").alt = p.name;
+  $("productCategory").textContent = p.category;
+  $("productName").textContent = p.name;
+  $("productRating").innerHTML = Store.stars(p.rating);
+  $("productDescription").textContent = p.description;
+  $("productPrice").textContent = App.money(p.price);
+  $("productStock").textContent = p.stock > 0 ? p.stock + " in stock" : "Out of stock";
+  $("productStock").style.color = p.stock > 0 ? "var(--success)" : "var(--danger)";
+  const max = Math.max(1, p.stock);
+  const q = $("detailQty");
+  const clamp = (n) => Math.min(max, Math.max(1, Number.isFinite(n) ? n : 1));
+  $("detailMinus").onclick = () => (q.value = clamp(Number(q.value) - 1));
+  $("detailPlus").onclick = () => (q.value = clamp(Number(q.value) + 1));
+  q.onchange = () => (q.value = clamp(parseInt(q.value, 10)));
+  if (p.stock === 0) $("addToCartDetail").disabled = true;
+  $("addToCartDetail").onclick = () => {
+    App.cart.add(p, clamp(parseInt(q.value, 10)));
+    $("addedMessage").textContent = q.value + " x " + p.name + " added to cart";
+  };
+});
+</script>
+</body>
+</html>

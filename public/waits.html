@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waits &amp; Dynamic Elements | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/waits.js" defer></script>
+</head>
+<body data-page="waits" data-title="Waits & Dynamic">
+<main class="content" id="content">
+  <div class="page-header"><div><h1>Waits &amp; Dynamic Elements</h1><p>Every delay here is fixed and predictable. Use explicit waits / web-first assertions — never <code>Thread.sleep</code>.</p></div></div>
+
+  <div class="grid-2">
+    <section class="card" id="hidden-element">
+      <div class="card-header"><div><h3>1. Element hidden in the DOM</h3><p>Already in the page, becomes visible after 3s.</p></div></div>
+      <div class="card-body">
+        <button type="button" class="btn btn-primary" id="startHidden">Start</button>
+        <div id="loading1" class="row mt-1 hidden"><span class="spinner"></span> Loading...</div>
+        <h4 id="finish1" class="result-text mt-1" style="display:none">Hello World!</h4>
+      </div>
+    </section>
+    <section class="card" id="rendered-element">
+      <div class="card-header"><div><h3>2. Element rendered after a delay</h3><p>Not in the DOM until 3s after the click.</p></div></div>
+      <div class="card-body">
+        <button type="button" class="btn btn-primary" id="startRender">Start</button>
+        <div id="loading2" class="row mt-1 hidden"><span class="spinner"></span> Loading...</div>
+        <div id="finish2Container"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" id="dynamic-controls">
+      <div class="card-header"><div><h3>3. Enable / disable &amp; add / remove</h3><p>Each action takes 2 seconds.</p></div></div>
+      <div class="card-body">
+        <div class="row">
+          <input type="text" id="dynamicInput" class="form-control" style="max-width:240px" disabled placeholder="Disabled until enabled" aria-label="Dynamic input">
+          <button type="button" class="btn btn-secondary" id="toggleInputBtn">Enable</button>
+        </div>
+        <p id="inputMessage" class="result-text mt-1"></p>
+        <hr>
+        <div class="row" id="checkboxArea">
+          <label class="check" id="dynamicCheckboxLabel" for="dynamicCheckbox"><input type="checkbox" id="dynamicCheckbox"> A checkbox</label>
+          <button type="button" class="btn btn-secondary" id="toggleCheckboxBtn">Remove</button>
+        </div>
+        <p id="checkboxMessage" class="result-text mt-1"></p>
+      </div>
+    </section>
+    <section class="card" id="text-change">
+      <div class="card-header"><div><h3>4. Text, attribute &amp; class changes</h3><p>Wait for text to change or for a class / attribute value.</p></div></div>
+      <div class="card-body stack">
+        <div class="row"><button type="button" class="btn btn-accent" id="processBtn">Process order</button><span id="processStatus" class="badge" data-status="idle">Idle</span></div>
+        <div class="row"><button type="button" class="btn btn-secondary" id="colorBtn">Change colour in 3s</button><span id="colorText" class="badge">I will turn red</span></div>
+        <div class="row"><button type="button" class="btn btn-secondary" id="countdownBtn">Start 5s countdown</button><span id="countdown" class="mono" style="font-weight:700">5</span><span id="countdownDone" class="result-text"></span></div>
+        <div class="row"><button type="button" class="btn btn-secondary" id="delayedAlertBtn">Alert after 3 seconds</button><span id="delayedAlertResult" class="result-text"></span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" id="ajax">
+      <div class="card-header"><div><h3>5. AJAX / API calls</h3><p>Real network requests to this site's API — wait for the response.</p></div></div>
+      <div class="card-body">
+        <div class="row">
+          <button type="button" class="btn btn-primary" id="loadUsersBtn">Load users</button>
+          <button type="button" class="btn btn-secondary" id="slowApiBtn">Call slow API (2s)</button>
+        </div>
+        <p id="ajaxStatus" class="small muted mt-1" role="status" aria-live="polite">Nothing loaded yet</p>
+        <ul id="userList" style="margin:0;padding-left:18px"></ul>
+      </div>
+    </section>
+    <section class="card" id="add-remove">
+      <div class="card-header"><div><h3>6. Add / remove elements</h3><p>Count elements and delete a specific one.</p></div></div>
+      <div class="card-body">
+        <button type="button" class="btn btn-primary" id="addElementBtn">Add Element</button>
+        <div id="elements" class="row mt-1"></div>
+        <p class="small muted mt-1">Elements: <b id="elementCount">0</b></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" id="infinite-scroll">
+      <div class="card-header"><div><h3>7. Infinite scroll</h3><p>10 more items load each time you reach the bottom (max 100).</p></div></div>
+      <div class="card-body">
+        <div class="scroll-box" id="infiniteList" style="height:220px" tabindex="0" aria-label="Infinite list"></div>
+        <p class="small muted mt-1">Loaded: <b id="loadedCount">0</b> items <span id="infiniteLoading" class="hidden">· loading…</span></p>
+      </div>
+    </section>
+    <section class="card" id="stale-element">
+      <div class="card-header"><div><h3>8. Stale elements</h3><p>"Refresh list" rebuilds the items, so old element references go stale.</p></div></div>
+      <div class="card-body">
+        <button type="button" class="btn btn-secondary" id="refreshListBtn">Refresh list</button>
+        <ul id="staleList" style="margin:10px 0 0;padding-left:18px"></ul>
+        <p class="small muted">Refreshed <b id="refreshCount">0</b> times</p>
+      </div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

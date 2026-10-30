@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/signupPage/signupScript.js" defer></script>
+</head>
+<body data-shell="none">
+  <div class="auth">
+    <aside class="auth-aside">
+      <div class="brand"><span class="brand-mark">AR</span> Automation With Rohit</div>
+      <h2>Create your free practice account.</h2>
+      <p>Register once and log in with your own email. Your account is stored in this browser only, so it is safe to experiment.</p>
+      <div class="tool-row"><span>Form validation</span><span>Error messages</span><span>Password rules</span></div>
+      <div class="aside-foot">Tip: automate the negative cases too — empty fields, bad email, mismatched passwords.</div>
+    </aside>
+    <main class="auth-main">
+      <div class="auth-box login-box">
+        <h1 id="signup-title">Create account</h1>
+        <p class="sub">It only takes a minute.</p>
+
+        <form id="signupForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="fullName">Full name <span class="req">*</span></label>
+            <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Enter your full name" autocomplete="off">
+            <div class="invalid-feedback" id="fullName-error"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" autocomplete="off">
+            <div class="invalid-feedback" id="email-error"></div>
+          </div>
+          <div class="form-group password-container">
+            <label class="form-label" for="password">Password <span class="req">*</span></label>
+            <div class="input-icon">
+              <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" autocomplete="off">
+              <button type="button" id="togglePassword" class="toggle-icon" aria-label="Show password"></button>
+            </div>
+            <div class="pw-meter" aria-hidden="true"><span id="password-meter"></span></div>
+            <div class="form-hint" id="password-strength">Use 8+ characters with a number and a symbol.</div>
+            <div class="invalid-feedback" id="password-error"></div>
+          </div>
+          <div class="form-group password-container">
+            <label class="form-label" for="confirmPassword">Re-enter Password <span class="req">*</span></label>
+            <div class="input-icon">
+              <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Re-enter your password" autocomplete="off">
+              <button type="button" id="toggleConfirmPassword" class="toggle-icon" aria-label="Show confirm password"></button>
+            </div>
+            <div class="invalid-feedback" id="confirmPassword-error"></div>
+          </div>
+          <div class="form-group">
+            <label class="check" for="terms"><input type="checkbox" id="terms" name="terms"> I agree to the Terms &amp; Privacy Policy</label>
+            <div class="invalid-feedback" id="terms-error"></div>
+          </div>
+          <button type="submit" id="signup-button" class="btn btn-primary btn-block btn-lg login-button">Create Account</button>
+          <div id="signup-message" class="success-message" role="alert"></div>
+        </form>
+
+        <div class="register-link small muted mt-2">
+          Back to Login Page <a href="/index.html" id="loginLink">Click Here!</a>
+        </div>
+        <div class="social-login">
+          <div class="or-divider or-text">Or sign up with</div>
+          <div class="social-icons">
+            <a href="https://www.google.com/" class="social-icon google-icon" target="_blank" rel="noopener">G</a>
+            <a href="https://www.facebook.com/" class="social-icon facebook-icon" target="_blank" rel="noopener">f</a>
+            <a href="https://x.com/" class="social-icon apple-icon" target="_blank" rel="noopener">X</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

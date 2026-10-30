@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Playground | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/api-playground.js" defer></script>
+</head>
+<body data-page="api" data-title="API Playground">
+<main class="content" id="content">
+  <div class="page-header">
+    <div>
+      <h1>API Playground</h1>
+      <p>A real REST API for practising <b>GET, POST, PUT, PATCH and DELETE</b> in Postman, Rest Assured, Playwright, Cypress or Python requests.</p>
+    </div>
+    <div class="row">
+      <a class="btn btn-secondary" href="/downloads/Rohit-Automation-API.postman_environment.json" download id="downloadEnv">Postman environment</a>
+      <a class="btn btn-primary" href="/downloads/Rohit-Automation-API.postman_collection.json" download id="downloadCollection">Download Postman collection</a>
+    </div>
+  </div>
+
+  <div id="apiOffline" class="alert alert-warning hidden" role="alert">
+    The API server is not reachable from this page. Start it with <code>node server.js</code> in the project folder and open <code>http://localhost:3000/api.html</code>.
+  </div>
+
+  <div class="grid-3 mb-2">
+    <div class="card stat mb-0"><div class="label">Base URL</div><div class="mono" style="font-weight:700;margin-top:6px;word-break:break-all" id="baseUrl">/api</div><div class="small muted">Use as <code>{{baseUrl}}</code> in Postman</div></div>
+    <div class="card stat mb-0"><div class="label">Auth</div><div style="margin-top:6px"><code>POST /api/auth/login</code></div><div class="small muted">admin / admin@1234 → Bearer token (24h)</div></div>
+    <div class="card stat mb-0"><div class="label">Server status</div><div style="margin-top:6px"><span class="status-pill" id="healthStatus">checking…</span></div><div class="small muted">from <code>GET /api/health</code></div></div>
+  </div>
+
+  <div class="grid-2" style="grid-template-columns: 1fr 1.15fr; align-items:start">
+    <section class="card" id="endpoints">
+      <div class="card-header"><div><h2>Endpoints</h2><p>Click an endpoint to load it into the console.</p></div></div>
+      <div id="endpointList"></div>
+    </section>
+
+    <section class="card" id="console" style="position:sticky;top:76px">
+      <div class="card-header"><div><h2>Try it</h2><p id="endpointDesc">Pick an endpoint or build your own request.</p></div></div>
+      <div class="card-body">
+        <div class="input-group mb-1">
+          <select id="requestMethod" class="form-select" style="max-width:110px;border-radius:8px 0 0 8px" aria-label="HTTP method">
+            <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option>
+          </select>
+          <input id="requestUrl" class="form-control mono" style="border-radius:0" value="/api/users" aria-label="Request URL">
+          <button type="button" class="btn btn-primary" id="sendRequest">Send</button>
+        </div>
+        <div class="row mb-1">
+          <label class="check" for="useAuth"><input type="checkbox" id="useAuth"> Send <code>Authorization: Bearer</code></label>
+          <button type="button" class="btn btn-secondary btn-sm" id="getTokenBtn">Get token</button>
+        </div>
+        <input id="authToken" class="form-control mono small mb-1" placeholder="Token (click Get token)" aria-label="Auth token" style="font-size:12px">
+        <label class="form-label" for="requestBody">Body (JSON)</label>
+        <textarea id="requestBody" class="form-control mono" rows="6" spellcheck="false" style="font-size:12.5px"></textarea>
+        <hr>
+        <div class="row" style="justify-content:space-between">
+          <div class="row"><b>Response</b><span class="status-pill" id="responseStatus">—</span></div>
+          <span class="small muted" id="responseTime"></span>
+        </div>
+        <pre class="code-block mt-1" id="responseBody" style="min-height:160px">// The response will appear here</pre>
+        <details class="mt-1"><summary class="small muted" style="cursor:pointer">Response headers</summary><pre class="code-block mt-1" id="responseHeaders" style="max-height:180px"></pre></details>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="docs">
+    <div class="card-header"><div><h2>Quick reference</h2><p>Status codes you can practise asserting on.</p></div></div>
+    <div class="card-body">
+      <div class="table-wrap"><table class="table" id="statusCodeTable">
+        <thead><tr><th>Status</th><th>Meaning</th><th>How to get it</th></tr></thead>
+        <tbody>
+          <tr><td><span class="status-pill status-2xx">200 OK</span></td><td>Request succeeded</td><td><code>GET /api/users</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code></td></tr>
+          <tr><td><span class="status-pill status-2xx">201 Created</span></td><td>New resource created (see the <code>Location</code> header)</td><td><code>POST /api/users</code>, <code>POST /api/orders</code></td></tr>
+          <tr><td><span class="status-pill status-4xx">400 Bad Request</span></td><td>Validation failed or invalid JSON</td><td><code>POST /api/users</code> without <code>email</code></td></tr>
+          <tr><td><span class="status-pill status-4xx">401 Unauthorized</span></td><td>Missing or invalid token / wrong password</td><td><code>DELETE /api/users/1</code> without a token</td></tr>
+          <tr><td><span class="status-pill status-4xx">403 Forbidden</span></td><td>User is locked</td><td>Login as <code>locked_user</code></td></tr>
+          <tr><td><span class="status-pill status-4xx">404 Not Found</span></td><td>Resource does not exist</td><td><code>GET /api/users/999</code></td></tr>
+          <tr><td><span class="status-pill status-4xx">405 Method Not Allowed</span></td><td>Wrong method for a valid path</td><td><code>DELETE /api/products</code></td></tr>
+          <tr><td><span class="status-pill status-4xx">409 Conflict</span></td><td>Duplicate email or out of stock</td><td><code>POST /api/users</code> with an existing email</td></tr>
+          <tr><td><span class="status-pill status-5xx">5xx</span></td><td>Server errors on demand</td><td><code>GET /api/status/500</code>, <code>/api/status/503</code></td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted mt-1">Data is kept in memory. <code>POST /api/reset</code> (or restarting the server) restores the original 12 users and 12 products.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

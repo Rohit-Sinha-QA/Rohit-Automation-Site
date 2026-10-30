@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Elements | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/advanced.js" defer></script>
+  <style>
+    .blocker-wrap { position: relative; display: inline-block; }
+    .blocker { position: absolute; inset: -6px; background: rgba(15,23,42,.65); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; border-radius: 8px; }
+    .h-scroll { overflow-x: auto; white-space: nowrap; border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+    .h-scroll .spacer { display: inline-block; width: 900px; }
+    .pseudo-label::before { content: "Price: "; color: var(--text-2); }
+    .pseudo-label::after { content: " (incl. GST)"; color: var(--text-3); font-size: 12px; }
+    #drawCanvas { border: 1px solid var(--border-strong); border-radius: 8px; background: #fff; cursor: crosshair; touch-action: none; }
+    .ctx-menu { position: fixed; display: none; z-index: 70; }
+    .ctx-menu.open { display: block; }
+    .ctx-zone { padding: 28px; border: 2px dashed var(--border-strong); border-radius: 8px; text-align: center; color: var(--text-2); }
+  </style>
+</head>
+<body data-page="advanced" data-title="Advanced Elements">
+<main class="content" id="content">
+  <div class="page-header"><div><h1>Advanced Elements</h1><p>The tricky cases you will meet in real projects — and that interviewers love to ask about.</p></div></div>
+
+  <nav class="section-index mb-2" aria-label="Sections on this page">
+    <a href="#shadow">Nested Shadow DOM</a><a href="#keyboard">Keyboard</a><a href="#svg">SVG &amp; Canvas</a><a href="#downloads">Downloads</a>
+    <a href="#visibility">Visibility &amp; intercepted clicks</a><a href="#editor">Rich text &amp; context menu</a><a href="#storage">Cookies &amp; storage</a><a href="#media">Images &amp; links</a><a href="#scroll">Scrolling</a>
+  </nav>
+
+  <div class="grid-2">
+    <section class="card" id="shadow">
+      <div class="card-header"><div><h2>Nested Shadow DOM</h2><p><code>#outer-host</code> → shadow root → <code>#inner-host</code> → shadow root</p></div></div>
+      <div class="card-body"><div id="outer-host"></div><p id="shadowResult" class="result-text mt-1"></p></div>
+    </section>
+
+    <section class="card" id="keyboard">
+      <div class="card-header"><div><h2>Keyboard Events</h2><p>Press any key (Enter, Tab, Escape, arrows, Ctrl+A…).</p></div></div>
+      <div class="card-body">
+        <label class="form-label" for="keyInput">Key press target</label>
+        <input id="keyInput" class="form-control" placeholder="Click here and press a key" autocomplete="off">
+        <p id="keyResult" class="result-text mt-1">You entered: </p>
+        <p class="small muted">Shortcut: press <kbd>Ctrl</kbd> + <kbd>K</kbd> anywhere on this page — <span id="shortcutResult">not pressed yet</span></p>
+        <hr>
+        <label class="form-label" for="copySource">Copy from here</label>
+        <input id="copySource" class="form-control" value="Copy this text with Ctrl+A, Ctrl+C">
+        <label class="form-label mt-1" for="pasteTarget">Paste here</label>
+        <input id="pasteTarget" class="form-control" placeholder="Ctrl+V here">
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="svg">
+    <div class="card-header"><div><h2>SVG &amp; Canvas</h2><p>SVG elements need <code>//*[name()='svg']</code> in XPath. Canvas content can only be checked by pixels or by the app's own state.</p></div></div>
+    <div class="card-body grid-2">
+      <div>
+        <svg id="svgChart" width="320" height="170" viewBox="0 0 320 170" role="img" aria-label="Weekly test runs chart">
+          <g id="bars">
+            <rect class="bar" data-day="Mon" data-value="40" x="20" y="90" width="34" height="60" rx="4" fill="#059669"/>
+            <rect class="bar" data-day="Tue" data-value="65" x="70" y="52" width="34" height="98" rx="4" fill="#059669"/>
+            <rect class="bar" data-day="Wed" data-value="30" x="120" y="105" width="34" height="45" rx="4" fill="#059669"/>
+            <rect class="bar" data-day="Thu" data-value="80" x="170" y="30" width="34" height="120" rx="4" fill="#059669"/>
+            <rect class="bar" data-day="Fri" data-value="55" x="220" y="67" width="34" height="83" rx="4" fill="#059669"/>
+            <circle id="svgCircle" cx="285" cy="40" r="18" fill="#4f46e5"><title>Click the circle</title></circle>
+          </g>
+          <g font-size="11" fill="currentColor" text-anchor="middle"><text x="37" y="165">Mon</text><text x="87" y="165">Tue</text><text x="137" y="165">Wed</text><text x="187" y="165">Thu</text><text x="237" y="165">Fri</text></g>
+        </svg>
+        <p id="svgResult" class="result-text">Click a bar or the circle</p>
+      </div>
+      <div>
+        <canvas id="drawCanvas" width="320" height="170" aria-label="Drawing canvas"></canvas>
+        <div class="row mt-1"><button type="button" class="btn btn-secondary btn-sm" id="clearCanvas">Clear</button><span class="small muted">Strokes drawn: <b id="strokeCount">0</b></span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="card" id="downloads">
+      <div class="card-header"><div><h2>File Downloads</h2><p>Static files and a file generated in the browser.</p></div></div>
+      <div class="card-body stack">
+        <a href="/downloads/report.csv" download id="downloadCsv">Download report.csv</a>
+        <a href="/downloads/sample.txt" download id="downloadTxt">Download sample.txt</a>
+        <a href="/downloads/users.json" download id="downloadJson">Download users.json</a>
+        <a href="/downloads/sample.pdf" download id="downloadPdf">Download sample.pdf</a>
+        <div class="row">
+          <input id="generatedText" class="form-control" style="max-width:240px" value="Hello from Rohit" aria-label="Text for generated file">
+          <button type="button" class="btn btn-secondary" id="generateFileBtn">Generate &amp; download notes.txt</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="visibility">
+      <div class="card-header"><div><h2>Visibility &amp; intercepted clicks</h2><p>Know the difference between "in the DOM" and "visible".</p></div></div>
+      <div class="card-body stack">
+        <div class="row small">
+          <span id="displayNone" style="display:none">display:none</span>
+          <span id="visibilityHidden" style="visibility:hidden">visibility:hidden</span>
+          <span id="opacityZero" style="opacity:0">opacity:0</span>
+          <span id="zeroSize" style="display:inline-block;width:0;height:0;overflow:hidden">zero size</span>
+          <span id="visibleSpan">I am visible</span>
+        </div>
+        <div class="row">
+          <div class="blocker-wrap"><button type="button" class="btn btn-primary" id="coveredBtn">Covered button</button><div class="blocker" id="blocker">Overlay</div></div>
+          <button type="button" class="btn btn-ghost btn-sm" id="removeOverlayBtn">Remove overlay</button>
+          <span id="coveredResult" class="result-text"></span>
+        </div>
+        <div class="h-scroll" id="horizontalScroll"><span class="spacer"></span><button type="button" class="btn btn-secondary btn-sm" id="farRightBtn">Far right button</button></div>
+        <p class="pseudo-label mb-0" id="pseudoText">₹4,999</p>
+        <p id="farRightResult" class="result-text"></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" id="editor">
+      <div class="card-header"><div><h2>Rich Text Editor &amp; Custom Context Menu</h2></div></div>
+      <div class="card-body">
+        <div class="toolbar-btns"><button type="button" class="btn btn-secondary btn-sm" id="boldBtn" data-cmd="bold"><b>B</b></button><button type="button" class="btn btn-secondary btn-sm" id="italicBtn" data-cmd="italic"><i>I</i></button><button type="button" class="btn btn-secondary btn-sm" id="listBtn" data-cmd="insertUnorderedList">• List</button></div>
+        <div id="richEditor" class="editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Rich text editor">Write <b>formatted</b> text here...</div>
+        <p class="small muted mt-1">Characters: <b id="editorCount">0</b></p>
+        <hr>
+        <div class="ctx-zone" id="contextZone">Right-click inside this box</div>
+        <div class="dropdown-menu ctx-menu" id="contextMenu" role="menu">
+          <button type="button" role="menuitem" data-item="Copy">Copy</button>
+          <button type="button" role="menuitem" data-item="Rename">Rename</button>
+          <button type="button" role="menuitem" data-item="Delete">Delete</button>
+        </div>
+        <p id="contextResult" class="result-text mt-1"></p>
+      </div>
+    </section>
+
+    <section class="card" id="storage">
+      <div class="card-header"><div><h2>Cookies, localStorage &amp; Geolocation</h2></div></div>
+      <div class="card-body">
+        <div class="row">
+          <input id="cookieName" class="form-control" style="max-width:150px" placeholder="Cookie name" value="theme">
+          <input id="cookieValue" class="form-control" style="max-width:150px" placeholder="Value" value="dark">
+          <button type="button" class="btn btn-secondary btn-sm" id="setCookieBtn">Set cookie</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="clearCookiesBtn">Delete all cookies</button>
+        </div>
+        <p class="small mt-1">document.cookie: <code id="cookieView"></code></p>
+        <div class="row">
+          <button type="button" class="btn btn-secondary btn-sm" id="setStorageBtn">Save "visits" to localStorage</button>
+          <span class="small">visits = <b id="storageView">0</b></span>
+        </div>
+        <hr>
+        <button type="button" class="btn btn-secondary btn-sm" id="geoBtn">Get my location</button>
+        <p id="geoResult" class="small muted mt-1">Location not requested</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="media">
+    <div class="card-header"><div><h2>Images &amp; Links</h2><p>Find broken images (naturalWidth = 0) and broken links (HTTP status ≥ 400).</p></div></div>
+    <div class="card-body">
+      <div class="row" id="imageRow">
+        <img src="/images/products/backpack.svg" alt="Backpack" width="120" height="90" id="goodImage1" style="border-radius:8px">
+        <img src="/images/does-not-exist.png" alt="Broken image" width="120" height="90" id="brokenImage1" style="border:1px dashed var(--border-strong);border-radius:8px">
+        <img src="/images/products/coffee-mug.svg" alt="Coffee Mug" width="120" height="90" id="goodImage2" style="border-radius:8px">
+        <img src="/images/missing-photo.jpg" alt="Another broken image" width="120" height="90" id="brokenImage2" style="border:1px dashed var(--border-strong);border-radius:8px">
+      </div>
+      <div class="row mt-2" id="linkRow">
+        <a href="/home.html" class="check-link">Overview (200)</a>
+        <a href="/webTable.html" class="check-link">Web Tables (200)</a>
+        <a href="/old-page.html" class="check-link">Old page (404)</a>
+        <a href="/api/status/500" class="check-link">Server error (500)</a>
+        <a href="/api/status/403" class="check-link">Forbidden (403)</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="scroll">
+    <div class="card-header"><div><h2>Scrolling</h2><p>Scroll the page, scroll inside a box, or scroll a specific element into view.</p></div></div>
+    <div class="card-body">
+      <div class="row"><button type="button" class="btn btn-secondary btn-sm" id="scrollBottomBtn">Scroll to bottom</button><span class="small muted">Page scroll Y: <b id="scrollY">0</b></span></div>
+      <div style="height:900px;display:grid;place-items:center;color:var(--text-3)" id="tallSpacer">↓ keep scrolling ↓</div>
+      <div class="alert alert-info" id="bottomOfPage">You reached the bottom of the page. <button type="button" class="btn btn-primary btn-sm" id="bottomButton">Click me</button> <span id="bottomResult"></span></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

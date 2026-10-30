@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Checkout | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/store.js" defer></script>
+</head>
+<body data-page="cart" data-title="Checkout">
+<main class="content" id="content" style="max-width:900px">
+  <h1 id="checkout-title">Checkout</h1>
+  <div class="stepper mt-2" id="checkoutSteps">
+    <div class="step active" id="co-step-1"><span class="num">1</span>Your information</div>
+    <div class="step" id="co-step-2"><span class="num">2</span>Overview</div>
+    <div class="step" id="co-step-3"><span class="num">3</span>Complete</div>
+  </div>
+
+  <section class="card" id="checkoutInfo">
+    <div class="card-header"><h2>Your information</h2></div>
+    <div class="card-body">
+      <form id="checkoutForm" novalidate>
+        <div class="grid-3" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="checkoutFirstName">First Name</label><input id="checkoutFirstName" name="firstName" class="form-control" placeholder="First Name" data-testid="firstName"></div>
+          <div class="form-group"><label class="form-label" for="checkoutLastName">Last Name</label><input id="checkoutLastName" name="lastName" class="form-control" placeholder="Last Name" data-testid="lastName"></div>
+          <div class="form-group"><label class="form-label" for="checkoutPostalCode">Zip/Postal Code</label><input id="checkoutPostalCode" name="postalCode" class="form-control" placeholder="Zip/Postal Code" data-testid="postalCode"></div>
+        </div>
+        <fieldset><legend>Payment method</legend>
+          <label class="check"><input type="radio" name="payment" id="payCard" value="Card" checked> Credit / Debit card</label>
+          <label class="check"><input type="radio" name="payment" id="payUpi" value="UPI"> UPI</label>
+          <label class="check"><input type="radio" name="payment" id="payCod" value="Cash on Delivery"> Cash on Delivery</label>
+        </fieldset>
+        <div class="alert alert-danger hidden" id="checkoutError" data-testid="error" role="alert"></div>
+        <div class="row"><a href="/store/cart.html" class="btn btn-secondary" id="cancelCheckout" data-testid="cancel">Cancel</a><button type="submit" class="btn btn-primary" id="continueBtn" data-testid="continue">Continue</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="card hidden" id="checkoutOverview">
+    <div class="card-header"><h2>Overview</h2></div>
+    <div class="card-body">
+      <div class="table-wrap"><table class="table" id="overviewTable"><thead><tr><th>Product</th><th>Qty</th><th>Price</th></tr></thead><tbody></tbody></table></div>
+      <div class="mt-2" style="max-width:320px;margin-left:auto">
+        <div class="summary-line"><span>Payment</span><span id="overviewPayment"></span></div>
+        <div class="summary-line"><span>Item total</span><span id="overviewSubtotal" class="summary_subtotal_label"></span></div>
+        <div class="summary-line"><span>Tax</span><span id="overviewTax" class="summary_tax_label"></span></div>
+        <div class="summary-line total"><span>Total</span><span id="overviewTotal" class="summary_total_label"></span></div>
+      </div>
+      <div class="row mt-2" style="justify-content:flex-end"><button type="button" class="btn btn-secondary" id="backToInfo">Back</button><button type="button" class="btn btn-primary" id="finishBtn" data-testid="finish">Finish</button></div>
+    </div>
+  </section>
+
+  <section class="card hidden" id="checkoutComplete">
+    <div class="card-body" style="text-align:center;padding:40px">
+      <div class="brand-mark" style="margin:0 auto 14px;width:52px;height:52px;font-size:22px">✓</div>
+      <h2 id="completeHeader" class="complete-header" data-testid="complete-header">Thank you for your order!</h2>
+      <p class="muted" id="completeText">Your order <b id="orderId"></b> has been placed and will arrive soon.</p>
+      <p class="small muted">Order total: <b id="completeTotal"></b></p>
+      <a href="/store/store.html" class="btn btn-primary mt-1" id="backHome" data-testid="back-to-products">Back Home</a>
+    </div>
+  </section>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (id) => document.getElementById(id);
+  const steps = ["checkoutInfo", "checkoutOverview", "checkoutComplete"];
+  function step(n) {
+    steps.forEach((s, i) => $(s).classList.toggle("hidden", i !== n - 1));
+    for (let i = 1; i <= 3; i++) $("co-step-" + i).className = "step" + (i === n ? " active" : i < n ? " done" : "");
+  }
+  if (App.cart.items().length === 0) {
+    $("checkoutError").textContent = "Your cart is empty. Add products before checking out.";
+    $("checkoutError").classList.remove("hidden");
+    $("continueBtn").disabled = true;
+  }
+  let customer = null;
+  $("checkoutForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = $("checkoutFirstName").value.trim(), l = $("checkoutLastName").value.trim(), z = $("checkoutPostalCode").value.trim();
+    const err = !f ? "Error: First Name is required" : !l ? "Error: Last Name is required" : !z ? "Error: Postal Code is required" : "";
+    $("checkoutError").textContent = err;
+    $("checkoutError").classList.toggle("hidden", !err);
+    if (err) return;
+    customer = { first_name: f, last_name: l, postal_code: z, payment: document.querySelector('input[name="payment"]:checked').value };
+    const items = App.cart.items();
+    const t = Store.totals(items);
+    $("overviewTable").tBodies[0].innerHTML = items.map((i) => '<tr class="overview-item"><td>' + App.escapeHtml(i.name) + '</td><td>' + i.qty + '</td><td>' + App.money(i.price * i.qty) + '</td></tr>').join("");
+    $("overviewPayment").textContent = customer.payment;
+    $("overviewSubtotal").textContent = "Item total: " + App.money(t.subtotal);
+    $("overviewTax").textContent = "Tax: " + App.money(t.tax);
+    $("overviewTotal").textContent = "Total: " + App.money(t.total);
+    step(2);
+  });
+  $("backToInfo").addEventListener("click", () => step(1));
+  $("finishBtn").addEventListener("click", async () => {
+    $("finishBtn").disabled = true;
+    const items = App.cart.items();
+    let order;
+    try {
+      const res = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ customer, items: items.map((i) => ({ id: i.id, qty: i.qty })) }) });
+      if (!res.ok) throw new Error();
+      order = await res.json();
+    } catch {
+      order = { order_id: Math.floor(1000 + Math.random() * 9000), total: Store.totals(items).total };
+    }
+    $("orderId").textContent = "#" + order.order_id;
+    $("completeTotal").textContent = App.money(order.total);
+    App.cart.clear();
+    step(3);
+  });
+});
+</script>
+</body>
+</html>

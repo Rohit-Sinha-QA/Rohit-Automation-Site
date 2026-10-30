@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/snippets.js" defer></script>
+  <script src="/dashboard/dashboardScript.js" defer></script>
+</head>
+<body data-page="elements" data-title="Practice Elements">
+<main class="content" id="content">
+  <div class="page-header">
+    <div>
+      <h1 id="page-title">Automation Practice Webelements</h1>
+      <p>Every common web element in one place. Click the <b>i</b> icon next to any element to see ready-to-copy code for Selenium (Java &amp; Python), Cypress and Playwright.</p>
+    </div>
+  </div>
+
+  <nav class="section-index mb-2" aria-label="Sections on this page">
+    <a href="#inputs">Inputs</a><a href="#selection">Radio &amp; Checkbox</a><a href="#dropdowns">Dropdowns</a>
+    <a href="#date-files">Date &amp; Files</a><a href="#mouse">Mouse Actions</a><a href="#alerts">Alerts</a>
+    <a href="#frames-windows">Frames &amp; Windows</a><a href="#waits">Waits</a><a href="#special">Shadow DOM &amp; Dynamic</a>
+  </nav>
+
+  <form id="registrationForm" onsubmit="return false;">
+
+    <!-- ===================== INPUTS ===================== -->
+    <section class="card" id="inputs">
+      <div class="card-header"><div><h2>Input Fields</h2><p>Type, clear, read values and check states.</p></div></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <label class="form-label" for="idtextbox1"><button type="button" class="info-icon" data-snippet="textbox" aria-label="Code for Input Box"></button>Input Box:</label>
+          <div class="control"><input type="text" id="idtextbox1" name="textbox1" class="form-control" placeholder="Type Something..." style="max-width:420px"></div>
+        </div>
+        <div class="practice-row">
+          <label class="form-label" for="idtextarea1"><button type="button" class="info-icon" data-snippet="textarea" aria-label="Code for Text Area"></button>Text Area:</label>
+          <div class="control" style="flex-direction:column;align-items:flex-start;gap:4px">
+            <textarea id="idtextarea1" name="textarea1" class="form-control" rows="3" maxlength="200" placeholder="Write a short message..." style="max-width:420px"></textarea>
+            <span class="small muted"><span id="textareaCount">0</span>/200 characters</span>
+          </div>
+        </div>
+        <div class="practice-row">
+          <label class="form-label" for="idreadonly"><button type="button" class="info-icon" data-snippet="readonly" aria-label="Code for Read-only and Disabled"></button>Read-only &amp; Disabled:</label>
+          <div class="control">
+            <input type="text" id="idreadonly" class="form-control" value="I am read-only" readonly style="max-width:200px">
+            <input type="text" id="iddisabled" class="form-control" value="I am disabled" disabled style="max-width:200px">
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="buttons" aria-label="Code for Buttons"></button>Buttons:</div>
+          <div class="control">
+            <button type="button" id="clickMeBtn" class="btn btn-primary">Count Clicks</button>
+            <button type="button" id="disabledBtn" class="btn btn-secondary" disabled>Disabled Button</button>
+            <p id="clickResult" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="links" aria-label="Code for Links"></button>Links:</div>
+          <div class="control">
+            <a href="/home.html" id="idhomelink">Go to Overview page</a>
+            <a href="/this-page-does-not-exist" id="idbrokenlink">Broken link (404)</a>
+            <a href="#waits" id="idanchorlink">Jump to Waits section</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RADIO & CHECKBOX ===================== -->
+    <section class="card" id="selection">
+      <div class="card-header"><div><h2>Radio Buttons &amp; Checkboxes</h2><p>Select, verify selected / enabled state, loop through groups.</p></div></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="radio" aria-label="Code for Radio Button"></button>Radio Button:</div>
+          <div class="control" role="radiogroup" aria-label="Gender">
+            <label class="check" for="idradiobutton1"><input type="radio" id="idradiobutton1" name="gender" value="Male"> Male</label>
+            <label class="check" for="idradiobutton2"><input type="radio" id="idradiobutton2" name="gender" value="Female"> Female</label>
+            <label class="check disabled" for="idradiobutton3"><input type="radio" id="idradiobutton3" name="gender" value="Other" disabled> Other</label>
+            <p id="radioResult" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="checkbox" aria-label="Code for Checkbox"></button>Checkbox:</div>
+          <div class="control">
+            <label class="check" for="idcheckbox1"><input type="checkbox" id="idcheckbox1" name="hobbies" value="Sports"> Sports</label>
+            <label class="check" for="idcheckbox2"><input type="checkbox" id="idcheckbox2" name="hobbies" value="Reading"> Reading</label>
+            <label class="check" for="idcheckbox3"><input type="checkbox" id="idcheckbox3" name="hobbies" value="Music"> Music</label>
+            <p id="checkboxResult" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="toggle" aria-label="Code for Toggle Switch"></button>Toggle Switch:</div>
+          <div class="control">
+            <label class="switch" for="idtoggle"><input type="checkbox" id="idtoggle" role="switch"> <span id="toggleState">Notifications are OFF</span></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DROPDOWNS ===================== -->
+    <section class="card" id="dropdowns">
+      <div class="card-header"><div><h2>Dropdowns</h2><p>A real &lt;select&gt;, a custom span/ul dropdown and an auto-suggest box.</p></div></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <label class="form-label" for="state"><button type="button" class="info-icon" data-snippet="static_dropdown" aria-label="Code for Static Dropdown"></button>Static Dropdown:</label>
+          <div class="control">
+            <select id="state" name="state" class="form-select" style="max-width:420px">
+              <option value="" selected>Select State</option>
+              <option value="AP">Andhra Pradesh</option>
+              <option value="Arunachal P">Arunachal Pradesh</option>
+              <option value="Asm">Assam</option>
+              <option value="Br">Bihar</option>
+              <option value="Chgarh">Chhattisgarh</option>
+              <option value="Goa">Goa</option>
+              <option value="Guj">Gujarat</option>
+              <option value="Hary">Haryana</option>
+              <option value="HP">Himachal Pradesh</option>
+              <option value="Jhar">Jharkhand</option>
+              <option value="Karna">Karnataka</option>
+              <option value="Ker">Kerala</option>
+              <option value="MP">Madhya Pradesh</option>
+              <option value="Mahara">Maharashtra</option>
+              <option value="Mani">Manipur</option>
+              <option value="Megha">Meghalaya</option>
+              <option value="Mizo">Mizoram</option>
+              <option value="Naga">Nagaland</option>
+              <option value="Odis">Odisha</option>
+              <option value="Punj">Punjab</option>
+              <option value="Rajas">Rajasthan</option>
+              <option value="Sik">Sikkim</option>
+              <option value="TN">Tamil Nadu</option>
+              <option value="Telan">Telangana</option>
+              <option value="Trip">Tripura</option>
+              <option value="UP">Uttar Pradesh</option>
+              <option value="Uttara">Uttarakhand</option>
+              <option value="WB">West Bengal</option>
+              <option value="Andam">Andaman and Nicobar Islands</option>
+              <option value="Chandi">Chandigarh</option>
+              <option value="Laksha">Lakshadweep</option>
+              <option value="Del">Delhi</option>
+              <option value="Puduch">Puducherry</option>
+              <option value="JK">Jammu and Kashmir</option>
+              <option value="Lad">Ladakh</option>
+            </select>
+            <p id="stateResult" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <label class="form-label" for="multiSelect"><button type="button" class="info-icon" data-snippet="multi_select" aria-label="Code for Multi Select"></button>Multi Select:</label>
+          <div class="control">
+            <select id="multiSelect" name="languages" class="form-select" multiple size="5" style="max-width:260px">
+              <option value="java">Java</option>
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="csharp">C#</option>
+              <option value="typescript">TypeScript</option>
+            </select>
+            <span class="small muted">Hold Ctrl / Cmd to select more than one</span>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="span_dropdown" aria-label="Code for Span Dropdown"></button>Span Dropdown:</div>
+          <div class="control">
+            <div class="custom-dropdown" id="spanDropdown">
+              <span class="selected" id="spanDropdownSelected" tabindex="0" role="button" aria-haspopup="listbox">Select State</span>
+              <ul class="dropdown-options" id="spanDropdownOptions" role="listbox">
+                <li data-value="AP">Andhra Pradesh</li><li data-value="Arunachal P">Arunachal Pradesh</li><li data-value="Asm">Assam</li>
+                <li data-value="Br">Bihar</li><li data-value="Chgarh">Chhattisgarh</li><li data-value="Goa">Goa</li>
+                <li data-value="Guj">Gujarat</li><li data-value="Hary">Haryana</li><li data-value="HP">Himachal Pradesh</li>
+                <li data-value="Jhar">Jharkhand</li><li data-value="Karna">Karnataka</li><li data-value="Ker">Kerala</li>
+                <li data-value="MP">Madhya Pradesh</li><li data-value="Mahara">Maharashtra</li><li data-value="Mani">Manipur</li>
+                <li data-value="Megha">Meghalaya</li><li data-value="Mizo">Mizoram</li><li data-value="Naga">Nagaland</li>
+                <li data-value="Odis">Odisha</li><li data-value="Punj">Punjab</li><li data-value="Rajas">Rajasthan</li>
+                <li data-value="Sik">Sikkim</li><li data-value="TN">Tamil Nadu</li><li data-value="Telan">Telangana</li>
+                <li data-value="Trip">Tripura</li><li data-value="UP">Uttar Pradesh</li><li data-value="Uttara">Uttarakhand</li>
+                <li data-value="WB">West Bengal</li><li data-value="Andam">Andaman and Nicobar Islands</li><li data-value="Chandi">Chandigarh</li>
+                <li data-value="Laksha">Lakshadweep</li><li data-value="Del">Delhi</li><li data-value="JK">Jammu and Kashmir</li><li data-value="Lad">Ladakh</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="practice-row">
+          <label class="form-label" for="searchBox"><button type="button" class="info-icon" data-snippet="dynamic_dropdown" aria-label="Code for Dynamic Dropdown"></button>Dynamic Dropdown:</label>
+          <div class="control">
+            <div class="autocomplete">
+              <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Type and Select State" autocomplete="off" role="combobox" aria-controls="suggestionsList" aria-expanded="false">
+              <ul class="suggestions" id="suggestionsList" role="listbox"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DATE & FILES ===================== -->
+    <section class="card" id="date-files">
+      <div class="card-header"><div><h2>Date Picker &amp; File Upload</h2><p>Native date input, single and multiple file uploads.</p></div></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <label class="form-label" for="datePicker"><button type="button" class="info-icon" data-snippet="date" aria-label="Code for Date Picker"></button>Date Picker:</label>
+          <div class="control">
+            <input type="date" id="datePicker" name="datePicker" class="form-control" style="max-width:220px" min="2000-01-01" max="2035-12-31">
+            <p id="dateResult" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <label class="form-label" for="idfileupload"><button type="button" class="info-icon" data-snippet="file_upload" aria-label="Code for File Upload"></button>File Upload:</label>
+          <div class="control">
+            <input type="file" id="idfileupload" name="fileupload" class="form-control" style="max-width:420px;padding-top:7px">
+            <p id="fileUploadResult" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="multi_upload" aria-label="Code for Multiple File Upload"></button>Multiple File Upload:</div>
+          <div class="control" style="flex-direction:column;align-items:flex-start">
+            <div class="row">
+              <button type="button" id="uploadBtn" class="btn btn-outline">Upload Here</button>
+              <input type="file" id="fileInput" name="files" multiple class="visually-hidden">
+              <span class="small muted" id="fileCount">No files chosen</span>
+            </div>
+            <ul id="fileList" class="small" style="margin:6px 0 0;padding-left:18px"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MOUSE ===================== -->
+    <section class="card" id="mouse">
+      <div class="card-header"><div><h2>Mouse Actions</h2><p>Hover, double click, right click, slider, resize and drag &amp; drop.</p></div></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="hover" aria-label="Code for Mouse Hover"></button>Mouse Hover:</div>
+          <div class="control">
+            <button id="hoverBtn" type="button" class="btn btn-secondary hover-button">Hover over this button</button>
+            <p id="text" class="result-text hover-text" style="display:none">This text appears on hover!</p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="double_click" aria-label="Code for Double Click"></button>Double Click:</div>
+          <div class="control">
+            <button id="dblClick" type="button" class="btn btn-secondary hover-button">Double Click this button</button>
+            <p id="dclick" class="result-text" style="display:none"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="right_click" aria-label="Code for Right Click"></button>Right Click:</div>
+          <div class="control">
+            <button id="rightClick" type="button" class="btn btn-secondary hover-button">Right Click this button</button>
+            <p id="rclick" class="result-text" style="display:none"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <label class="form-label" for="slider"><button type="button" class="info-icon" data-snippet="slider" aria-label="Code for Slider"></button>Adjust Slider:</label>
+          <div class="control">
+            <input type="range" id="slider" name="slider" min="0" max="100" value="50" class="slider" style="width:300px">
+            <p id="sliderValue" class="result-text">Value: 50</p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="resize" aria-label="Code for Resizable"></button>Resize Me:</div>
+          <div class="control">
+            <div id="resizableBox">Resize this box<div class="resizer" id="resizeHandle" title="Drag to resize"></div></div>
+            <p id="resizeResult" class="small muted">Size: 260 x 100</p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="drag_drop" aria-label="Code for Drag and Drop"></button>Draggable:</div>
+          <div class="control">
+            <div id="draggable" class="drag-box draggable">Drag Me</div>
+            <div id="droppable" class="drag-box droppable">Drop Here</div>
+            <button type="button" id="resetDrag" class="btn btn-ghost btn-sm">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ALERTS ===================== -->
+    <section class="card" id="alerts">
+      <div class="card-header"><div><h2>Alerts &amp; Popups</h2><p>JavaScript alert, confirm and prompt dialogs.</p></div></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="alerts" aria-label="Code for Alerts"></button>Alert Example:</div>
+          <div class="control">
+            <button type="button" id="idalert" class="btn btn-secondary">Show OK Alert</button>
+            <button type="button" id="idconfirm" class="btn btn-secondary">Show Confirm Alert</button>
+            <button type="button" id="idprompt" class="btn btn-secondary">Show Prompt Alert</button>
+            <p id="message" class="result-text"></p>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="modal" aria-label="Code for HTML Modal"></button>HTML Modal:</div>
+          <div class="control">
+            <button type="button" id="openModalBtn" class="btn btn-accent">Open Modal</button>
+            <p id="modalResult" class="result-text"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FRAMES & WINDOWS ===================== -->
+    <section class="card" id="frames-windows">
+      <div class="card-header"><div><h2>Frames, Tabs &amp; Windows</h2><p>Switch into an iframe, handle new tabs and windows, and bad SSL pages.</p></div><a class="btn btn-secondary btn-sm" href="/frames.html">More frame practice</a></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="iframe" aria-label="Code for Iframe"></button>Iframe:</div>
+          <div class="control">
+            <iframe id="iframe-id" name="iframe-name" title="Practice iframe" src="/frames/iframe-content.html" width="520" height="210" class="frame-box">Your browser does not support iframes.</iframe>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="hide_show" aria-label="Code for Hide and Show"></button>Hide and Show:</div>
+          <div class="control">
+            <input id="show-textbox" class="btn btn-secondary btn-style class2" value="Show" type="button">
+            <input id="hide-textbox" class="btn btn-secondary btn-style class2" value="Hide" type="button">
+            <input id="displayed-text" class="form-control inputs displayed-class" placeholder="Hey, I am visible" type="text" style="display:none;max-width:220px">
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="webtable_link" aria-label="Code for WebTable link"></button>WebTable:</div>
+          <div class="control"><a href="/webTable.html" id="idwebtable" class="new-tab">Click to open webtable page</a></div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="new_tab" aria-label="Code for New Tab"></button>New Tab:</div>
+          <div class="control"><a href="/home.html" target="_blank" id="idnewtab" class="new-tab">Click to open new tab</a></div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="new_window" aria-label="Code for New Window"></button>New Window:</div>
+          <div class="control"><a href="/frames/new-window.html" id="idnewwindow" class="new-tab">Click to open new window</a></div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="bad_ssl" aria-label="Code for Bad SSL"></button>Bad SSL:</div>
+          <div class="control"><a id="idbadssl" href="https://expired.badssl.com/" class="new-tab">Click to open Bad SSL Website</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WAITS ===================== -->
+    <section class="card" id="waits">
+      <div class="card-header"><div><h2>Waits</h2><p>Elements that appear or become clickable after a delay. Use explicit waits, not sleeps.</p></div><a class="btn btn-secondary btn-sm" href="/waits.html">More wait practice</a></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="wait_visible" aria-label="Code for Wait Visible"></button>Wait Visible:</div>
+          <div class="control">
+            <button id="WaitVisible" type="button" class="btn btn-secondary hover-button">Click this button</button>
+            <div id="textContainer"></div>
+            <span class="small muted">Text appears after 4 seconds</span>
+          </div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="wait_clickable" aria-label="Code for Wait Clickable"></button>Wait Clickable:</div>
+          <div class="control">
+            <button id="enableRadioBtn" type="button" class="btn btn-secondary hover-button">Click me to enable</button>
+            <label class="check" for="delayedRadio"><input type="radio" id="delayedRadio" name="delayedRadio" disabled style="transform:scale(1.4)"> <span id="delayedRadioLabel">Disabled</span></label>
+            <span class="small muted">Radio becomes enabled after 7 seconds</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SPECIAL ===================== -->
+    <section class="card" id="special">
+      <div class="card-header"><div><h2>Shadow DOM &amp; Dynamic Locators</h2><p>Elements that need special locator strategies.</p></div><a class="btn btn-secondary btn-sm" href="/advanced.html">More advanced elements</a></div>
+      <div class="practice-list">
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="shadow" aria-label="Code for Shadow DOM"></button>Shadow Dom:</div>
+          <div class="control"><div id="shadow-host"></div></div>
+        </div>
+        <div class="practice-row">
+          <div class="label-cell form-label"><button type="button" class="info-icon" data-snippet="dynamic_xpath" aria-label="Code for Dynamic Xpath"></button>Dynamic Xpath:</div>
+          <div class="control">
+            <input type="text" id="" name="" class="form-control dynamic-input" placeholder="Type Something..." style="max-width:420px" data-role="dynamic">
+            <span class="small muted">id and name change on every page load</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <!-- Code snippet popup (old ids kept: overlay, popup, popup-title, popup-text) -->
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <div class="modal-header">
+      <h3 id="popup-title">Code</h3>
+      <button type="button" class="icon-btn" id="closePopupBtn" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <div class="tabs" role="tablist" id="snippet-tabs">
+        <button type="button" class="tab" role="tab" data-lang="java" aria-selected="true" id="tab-java">Selenium-Java</button>
+        <button type="button" class="tab" role="tab" data-lang="python" aria-selected="false" id="tab-python">Selenium-Python</button>
+        <button type="button" class="tab" role="tab" data-lang="cypress" aria-selected="false" id="tab-cypress">Cypress-JavaScript</button>
+        <button type="button" class="tab" role="tab" data-lang="playwright" aria-selected="false" id="tab-playwright">Playwright-Python</button>
+      </div>
+      <pre class="code-block" id="popup-text"></pre>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary copy-btn" id="copyBtn">Copy</button>
+      <button type="button" class="btn btn-primary" id="closeBtn">Close</button>
+    </div>
+  </div>
+
+  <!-- Practice HTML modal -->
+  <div class="overlay" id="practiceOverlay"></div>
+  <div class="modal" id="practiceModal" role="dialog" aria-modal="true" aria-labelledby="practiceModalTitle" style="width:min(460px,calc(100vw - 32px))">
+    <div class="modal-header"><h3 id="practiceModalTitle">Subscribe to updates</h3><button type="button" class="icon-btn" id="practiceModalX" aria-label="Close modal"></button></div>
+    <div class="modal-body">
+      <p class="muted">This is an HTML modal, not a browser alert. Locate it like any other element.</p>
+      <label class="form-label" for="modalEmail">Email address</label>
+      <input type="email" id="modalEmail" class="form-control" placeholder="you@example.com">
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="modalCancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="modalSubmit">Subscribe</button>
+    </div>
+  </div>
+</main>
+</body>
+</html>

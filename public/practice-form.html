@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Practice Page</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/lab.css">
+</head>
+<body>
+  <div class="lab-bar"><span class="mark">AR</span><span>Study Lab · matches the course study material</span><a href="/home.html">Back to app →</a></div>
+  <div class="lab-page">
+  <h1>QA Practice Page</h1>
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxMGI5ODEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZWE1ZTkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI5IiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iMjAiIHk9IjI2IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFSPC90ZXh0Pjwvc3ZnPg==" alt="Company logo" width="40" height="40">
+
+  <nav id="menu" title="Main menu">
+    <button type="button">Menu</button>
+    <ul class="submenu">
+      <li><a href="#reports">Reports</a></li>
+      <li><a href="#settings">Settings</a></li>
+    </ul>
+  </nav>
+
+  <h2>Registration</h2>
+  <form id="register-form">
+    <label for="first-name">First name</label>
+    <input id="first-name" name="firstName" placeholder="Enter first name">
+    <label for="last-name">Last name</label>
+    <input id="last-name" name="lastName" placeholder="Enter last name">
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="name@example.com" data-testid="email-input">
+    <label for="password">Password</label>
+    <input id="password" type="password">
+
+    <fieldset>
+      <legend>Gender</legend>
+      <label><input type="radio" name="gender" value="male"> Male</label>
+      <label><input type="radio" name="gender" value="female"> Female</label>
+      <label><input type="radio" name="gender" value="other"> Other</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Hobbies</legend>
+      <label><input type="checkbox" name="hobby" value="reading"> Reading</label>
+      <label><input type="checkbox" name="hobby" value="music"> Music</label>
+      <label><input type="checkbox" name="hobby" value="sports"> Sports</label>
+    </fieldset>
+
+    <label for="country">Country</label>
+    <select id="country">
+      <option value="">Select country</option>
+      <option value="in">India</option>
+      <option value="us">United States</option>
+      <option value="uk">United Kingdom</option>
+    </select>
+
+    <label for="skills">Skills</label>
+    <select id="skills" multiple>
+      <option>Python</option>
+      <option>Playwright</option>
+      <option>SQL</option>
+      <option>Git</option>
+    </select>
+
+    <label for="dob">Date of birth</label>
+    <input id="dob" type="date">
+    <label for="resume">Resume</label>
+    <input id="resume" type="file">
+    <label for="address">Address</label>
+    <textarea id="address"></textarea>
+    <label><input type="checkbox" id="terms"> I accept the terms</label>
+    <button type="submit" data-testid="submit-btn">Register</button>
+  </form>
+  <p id="result" role="status"></p>
+
+  <h2>Products</h2>
+  <div id="products">
+    <div class="card" data-testid="product-card"><h3>Backpack</h3><span class="price">$29.99</span>
+      <button type="button">Add to cart</button></div>
+    <div class="card" data-testid="product-card"><h3>Bike Light</h3><span class="price">$9.99</span>
+      <button type="button">Add to cart</button></div>
+    <div class="card" data-testid="product-card"><h3>Bolt T-Shirt</h3><span class="price">$15.99</span> <button type="button">Add to cart</button></div>
+    <div class="card" data-testid="product-card"><h3>Fleece Jacket</h3><span class="price">$49.99</span> <span class="badge">Out of stock</span> <button type="button" disabled>Add to cart</button></div>
+  </div>
+  <p>Cart items: <span id="cart-count" data-testid="cart-count">0</span></p>
+
+  <h2>Actions</h2>
+  <button type="button" id="dbl">Double-click me</button>
+  <button type="button" id="ctx">Right-click me</button>
+  <p id="action-log"></p>
+  <div id="draggable" draggable="true">Drag me</div>
+  <div id="dropzone">Drop here</div>
+  <label for="search">Search</label>
+  <input id="search" placeholder="Search products">
+
+  <h2>Waiting</h2>
+  <button type="button" id="load-data">Load data</button>
+  <div id="loaded"></div>
+  <button type="button" id="show-toast">Save</button>
+  <div id="toast">Saved successfully</div>
+  <div id="long-list"></div>
+  </div>
+
+  <script>
+    document.getElementById("register-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const first = document.getElementById("first-name").value.trim();
+      const last = document.getElementById("last-name").value.trim();
+      const result = document.getElementById("result");
+      if (!first) { result.textContent = "First name is required"; return; }
+      if (!document.getElementById("terms").checked) { result.textContent = "Please accept the terms"; return; }
+      const country = document.getElementById("country").value || "none";
+      const gender = (document.querySelector("input[name=gender]:checked") || {}).value || "none";
+      const hobbies = [...document.querySelectorAll("input[name=hobby]:checked")].map(h => h.value).join(",") || "none";
+      result.textContent = `Registered: ${first} ${last} | country=${country} | gender=${gender} | hobbies=${hobbies}`;
+    });
+
+    document.querySelectorAll("#products button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const count = document.getElementById("cart-count");
+        count.textContent = String(Number(count.textContent) + 1);
+        btn.textContent = "Added";
+        btn.disabled = true;
+      });
+    });
+
+    const log = document.getElementById("action-log");
+    document.getElementById("dbl").addEventListener("dblclick", () => log.textContent = "Double-clicked");
+    document.getElementById("ctx").addEventListener("contextmenu", (e) => { e.preventDefault(); log.textContent = "Right-clicked"; });
+    document.getElementById("draggable").addEventListener("dragstart", (e) => e.dataTransfer.setData("text", "drag"));
+    const dz = document.getElementById("dropzone");
+    dz.addEventListener("dragover", (e) => e.preventDefault());
+    dz.addEventListener("drop", (e) => { e.preventDefault(); dz.textContent = "Dropped!"; });
+    document.getElementById("search").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") log.textContent = "Searching for: " + this.value;
+    });
+
+    document.getElementById("load-data").addEventListener("click", function () {
+      this.disabled = true;
+      setTimeout(() => { document.getElementById("loaded").textContent = "Data loaded"; }, 2000);
+    });
+    document.getElementById("show-toast").addEventListener("click", function () {
+      const t = document.getElementById("toast");
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 1500);
+    });
+
+    const list = document.getElementById("long-list");
+    for (let i = 1; i <= 50; i++) {
+      const row = document.createElement("div");
+      row.textContent = "Item " + i;
+      list.appendChild(row);
+    }
+
+    // ---- Extras so Selenium and Cypress can automate the same page ----
+    // Hover menu also opens on mouseover events (Cypress trigger('mouseover')).
+    const menu = document.getElementById("menu");
+    menu.addEventListener("mouseover", () => menu.classList.add("hovered"));
+    menu.addEventListener("mouseleave", () => menu.classList.remove("hovered"));
+    // Mouse-event fallback for drag & drop (Selenium Actions.dragAndDrop does not fire HTML5 drag events).
+    (function () {
+      const src = document.getElementById("draggable");
+      let down = false, sx = 0, sy = 0;
+      src.addEventListener("mousedown", (e) => { down = true; sx = e.clientX; sy = e.clientY; });
+      document.addEventListener("mouseup", (e) => {
+        if (!down) return;
+        down = false;
+        const r = dz.getBoundingClientRect();
+        const moved = Math.abs(e.clientX - sx) > 3 || Math.abs(e.clientY - sy) > 3;
+        if (dz.contains(e.target) || (moved && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom)) dz.textContent = "Dropped!";
+      });
+      src.addEventListener("dragstart", () => { down = false; });
+    })();
+  </script>
+</body>
+</html>

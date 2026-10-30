@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Child Frame</title>
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <style>body{background:var(--surface);padding:12px}</style>
+</head>
+<body>
+  <h3 id="childHeading">Child frame (nested)</h3>
+  <div class="row">
+    <input id="childInput" class="form-control" placeholder="Typed in the child frame" style="max-width:240px" aria-label="Child frame input">
+    <button type="button" id="childButton" class="btn btn-primary btn-sm">Save</button>
+  </div>
+  <p id="childResult" class="result-text mt-1"></p>
+  <script>
+    document.getElementById("childButton").addEventListener("click", () => {
+      document.getElementById("childResult").textContent = "Saved: " + document.getElementById("childInput").value;
+    });
+  </script>
+</body>
+</html>

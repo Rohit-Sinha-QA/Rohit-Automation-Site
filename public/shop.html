@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Shop</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/lab.css">
+</head>
+<body>
+  <div class="lab-bar"><span class="mark">AR</span><span>Study Lab · matches the course study material</span><a href="/home.html">Back to app →</a></div>
+  <div class="lab-page">
+  <h1>Mini Shop</h1>
+  <img src="images/banner.svg" alt="Sale banner" width="300" height="60">
+  <p id="status" role="status">Loading products...</p>
+  <ul id="products"></ul>
+  <p id="cart-message"></p>
+  </div>
+  <script>
+    const status = document.getElementById("status");
+    const list = document.getElementById("products");
+    fetch("/api/products.json")
+      .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(items => {
+        if (items.length === 0) { status.textContent = "No products found"; return; }
+        status.textContent = items.length + " products";
+        items.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} - $${item.price.toFixed(2)} `;
+          const btn = document.createElement("button");
+          btn.textContent = "Add " + item.name;
+          btn.onclick = () => fetch("/api/cart", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({id: item.id, qty: 1})
+            })
+            .then(r => r.json())
+            .then(data => { document.getElementById("cart-message").textContent = data.message; })
+            .catch(() => { document.getElementById("cart-message").textContent = "Could not add to cart"; });
+          li.appendChild(btn);
+          list.appendChild(li);
+        });
+      })
+      .catch(() => { status.textContent = "Something went wrong. Please try again."; });
+    fetch("/analytics/track?page=shop").catch(() => {});
+  </script>
+</body>
+</html>

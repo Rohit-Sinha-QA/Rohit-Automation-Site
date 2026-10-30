@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/indexScript.js" defer></script>
+</head>
+<body data-shell="none">
+  <div class="auth">
+    <aside class="auth-aside">
+      <div class="brand"><span class="brand-mark">AR</span> Automation With Rohit</div>
+      <h2>All-in-one place for automation practice.</h2>
+      <p>Real-world forms, tables, frames, waits, an e-commerce flow and a REST API — built to be automated with any tool.</p>
+      <div class="tool-row"><span>Selenium</span><span>Cypress</span><span>Playwright</span><span>WebdriverIO</span><span>Postman</span><span>Rest Assured</span></div>
+      <div class="aside-foot">Trusted by QA students and working testers for hands-on practice.</div>
+    </aside>
+
+    <main class="auth-main">
+      <div class="auth-box login-box">
+        <div class="login-header">
+          <h1 id="login-title">Welcome back</h1>
+          <p class="sub">Sign in to continue to your practice dashboard.</p>
+        </div>
+
+        <div id="info-banner" class="alert alert-success hidden" role="alert"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="user-type segmented" role="radiogroup" aria-label="User Type">
+            <label for="employee"><input type="radio" id="employee" name="userType" value="Employee" checked> Employee</label>
+            <label for="student"><input type="radio" id="student" name="userType" value="Student"> Student</label>
+          </div>
+
+          <div class="form-group input-group-wrap">
+            <label class="form-label" for="user">Username or Email</label>
+            <input type="text" id="user" name="username" class="form-control" placeholder="Enter your username or email" autocomplete="off" data-testid="username">
+          </div>
+
+          <div class="form-group password-container">
+            <label class="form-label" for="pass">Password</label>
+            <div class="input-icon">
+              <input type="password" id="pass" name="password" class="form-control" placeholder="Enter your password" autocomplete="off" data-testid="password">
+              <button type="button" id="togglePassword" class="toggle-icon" aria-label="Show password" title="Show password"></button>
+            </div>
+          </div>
+
+          <div class="row" style="justify-content: space-between; margin-bottom: 18px;">
+            <label class="check" for="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe"> Remember me</label>
+            <a href="/forgotPassword/forgotPassword.html" id="forgotPasswordLink" class="forgot-password">Forgot password?</a>
+          </div>
+
+          <button type="submit" id="login-button" class="btn btn-primary btn-block btn-lg login-button" data-testid="login-button">Login</button>
+          <div id="error-message" class="error-message" role="alert" data-testid="error-message"></div>
+        </form>
+
+        <div class="register-link small muted">
+          Not registered? <a href="/signupPage/signup.html" id="signupLink">Create an account</a>
+        </div>
+
+        <div class="social-login">
+          <div class="or-divider or-text">Or sign in with</div>
+          <div class="social-icons">
+            <a href="https://www.google.com/" id="googleLogin" class="social-icon google-icon" target="_blank" rel="noopener" title="Google">G</a>
+            <a href="https://www.facebook.com/" id="facebookLogin" class="social-icon facebook-icon" target="_blank" rel="noopener" title="Facebook">f</a>
+            <a href="https://x.com/" id="xLogin" class="social-icon apple-icon" target="_blank" rel="noopener" title="X">X</a>
+          </div>
+        </div>
+
+        <div class="demo-creds" id="demo-credentials">
+          <b>Practice credentials</b><br>
+          Valid: <code>admin</code> / <code>admin@1234</code> &nbsp;·&nbsp; <code>student</code> / <code>student@1234</code><br>
+          Locked out: <code>locked_user</code> / <code>admin@1234</code>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

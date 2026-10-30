@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Widgets Page</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/lab.css">
+</head>
+<body>
+  <div class="lab-bar"><span class="mark">AR</span><span>Study Lab · matches the course study material</span><a href="/home.html">Back to app →</a></div>
+  <div class="lab-page">
+  <h1>QA Widgets Page</h1>
+
+  <h2>Frames</h2>
+  <iframe id="payment-frame" title="Payment" src="payment.html" width="420" height="140"></iframe>
+
+  <h2>Windows</h2>
+  <a href="help.html" target="_blank">Open help in new tab</a>
+  <button type="button" onclick="window.open('help.html', 'help', 'width=600,height=400')">Open popup window</button>
+
+  <h2>Dialogs</h2>
+  <button type="button" id="alert-btn">Show alert</button>
+  <button type="button" id="confirm-btn">Delete order</button>
+  <button type="button" id="prompt-btn">Rename order</button>
+  <p id="dialog-result" role="status"></p>
+
+  <h2>Downloads</h2>
+  <a href="report.csv" download>Download report</a>
+
+  <h2>Orders</h2>
+  <table id="orders">
+    <thead><tr><th>Order ID</th><th>Customer</th><th>Status</th><th>Amount</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>1001</td><td>Ravi Kumar</td><td>Shipped</td><td>250.00</td><td><button type="button">View</button></td></tr>
+      <tr><td>1002</td><td>Asha Rao</td><td>Pending</td><td>99.50</td><td><button type="button">View</button></td></tr>
+      <tr><td>1003</td><td>John Smith</td><td>Delivered</td><td>1200.00</td><td><button type="button">View</button></td></tr>
+      <tr><td>1004</td><td>Meera Iyer</td><td>Pending</td><td>450.75</td><td><button type="button">View</button></td></tr>
+      <tr><td>1005</td><td>Arjun Das</td><td>Cancelled</td><td>75.00</td><td><button type="button">View</button></td></tr>
+    </tbody>
+  </table>
+  <p id="order-detail"></p>
+
+  <h2>Date picker</h2>
+  <label for="travel-date">Travel date</label>
+  <input id="travel-date" placeholder="Select date" readonly>
+  <div class="calendar" id="calendar">
+    <button type="button" id="prev-month" aria-label="Previous month">&lt;</button>
+    <span id="month-label"></span>
+    <button type="button" id="next-month" aria-label="Next month">&gt;</button>
+    <div id="days"></div>
+  </div>
+
+  <h2>Auto-suggest</h2>
+  <label for="city">City</label>
+  <input id="city" placeholder="Type a city" autocomplete="off">
+  <ul id="suggestions" role="listbox"></ul>
+
+  <h2>Account</h2>
+  <div id="account"><button type="button">Account</button>
+    <div class="menu"><a href="#profile">Profile</a> <a href="#logout">Logout</a></div>
+  </div>
+  </div>
+
+  <script>
+    const result = document.getElementById("dialog-result");
+    document.getElementById("alert-btn").onclick = () => { alert("Order saved"); result.textContent = "Alert closed"; };
+    document.getElementById("confirm-btn").onclick = () => {
+      result.textContent = confirm("Delete order 1002?") ? "Order deleted" : "Delete cancelled";
+    };
+    document.getElementById("prompt-btn").onclick = () => {
+      const name = prompt("New order name?", "Order 1002");
+      result.textContent = name === null ? "Rename cancelled" : "Renamed to " + name;
+    };
+
+    document.querySelectorAll("#orders tbody button").forEach(btn => btn.onclick = () => {
+      const cells = btn.closest("tr").querySelectorAll("td");
+      document.getElementById("order-detail").textContent = `Order ${cells[0].textContent} for ${cells[1].textContent}`;
+    });
+
+    const months = [["January 2027", 31], ["February 2027", 28], ["March 2027", 31]];
+    let m = 0;
+    const cal = document.getElementById("calendar");
+    function render() {
+      document.getElementById("month-label").textContent = months[m][0];
+      const days = document.getElementById("days");
+      days.innerHTML = "";
+      for (let d = 1; d <= months[m][1]; d++) {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "day"; b.textContent = d;
+        b.onclick = () => {
+          document.getElementById("travel-date").value = `2027-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+          cal.classList.remove("open");
+        };
+        days.appendChild(b);
+      }
+    }
+    document.getElementById("travel-date").onclick = () => { cal.classList.add("open"); render(); };
+    document.getElementById("next-month").onclick = () => { if (m < 2) { m++; render(); } };
+    document.getElementById("prev-month").onclick = () => { if (m > 0) { m--; render(); } };
+
+    const cities = ["Hyderabad", "Bengaluru", "Chennai", "Mumbai", "Delhi", "Kolkata", "Hubballi"];
+    const city = document.getElementById("city");
+    const list = document.getElementById("suggestions");
+    let timer = null;
+    city.addEventListener("input", () => {
+      clearTimeout(timer);
+      list.innerHTML = "";
+      const q = city.value.toLowerCase();
+      if (!q) return;
+      timer = setTimeout(() => {
+        list.innerHTML = "";
+        cities.filter(c => c.toLowerCase().startsWith(q)).forEach(c => {
+          const li = document.createElement("li");
+          li.setAttribute("role", "option"); li.textContent = c;
+          li.onclick = () => { city.value = c; list.innerHTML = ""; };
+          list.appendChild(li);
+        });
+      }, 300);
+    });
+
+    // Extra: account menu also opens on mouseover events (Cypress trigger('mouseover')).
+    const acc = document.getElementById("account");
+    acc.addEventListener("mouseover", () => acc.classList.add("hovered"));
+    acc.addEventListener("mouseleave", () => acc.classList.remove("hovered"));
+  </script>
+</body>
+</html>

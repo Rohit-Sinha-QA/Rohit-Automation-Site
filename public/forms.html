@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forms | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/forms.js" defer></script>
+</head>
+<body data-page="forms" data-title="Forms">
+<main class="content" id="content">
+  <div class="page-header">
+    <div><h1>Forms</h1><p>A full registration form with every HTML5 input type, cascading dropdowns, validation messages and a multi-step wizard.</p></div>
+  </div>
+  <nav class="section-index mb-2" aria-label="Sections on this page"><a href="#registration">Registration form</a><a href="#wizard">Multi-step wizard</a></nav>
+
+  <section class="card" id="registration">
+    <div class="card-header"><div><h2>Student Registration</h2><p>Fields marked <span style="color:var(--danger)">*</span> are required. Submit empty to see the validation messages.</p></div></div>
+    <div class="card-body">
+      <div id="formErrors" class="alert alert-danger hidden" role="alert"></div>
+      <form id="studentForm" novalidate>
+        <h3 class="mb-2">Personal details</h3>
+        <div class="grid-2" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="firstName">First name <span class="req">*</span></label><input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter first name" data-testid="first-name"><div class="invalid-feedback" id="firstName-error"></div></div>
+          <div class="form-group"><label class="form-label" for="lastName">Last name <span class="req">*</span></label><input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter last name" data-testid="last-name"><div class="invalid-feedback" id="lastName-error"></div></div>
+          <div class="form-group"><label class="form-label" for="userEmail">Email <span class="req">*</span></label><input type="email" id="userEmail" name="email" class="form-control" placeholder="name@example.com" data-testid="email"><div class="invalid-feedback" id="userEmail-error"></div></div>
+          <div class="form-group"><label class="form-label" for="userPhone">Mobile number <span class="req">*</span></label>
+            <div class="input-group"><span class="addon" style="border-radius:8px 0 0 8px;border-left:1px solid var(--border-strong);border-right:0">+91</span><input type="tel" id="userPhone" name="phone" class="form-control" placeholder="10-digit number" maxlength="10" style="border-radius:0 8px 8px 0" data-testid="phone"></div>
+            <div class="invalid-feedback" id="userPhone-error"></div></div>
+          <div class="form-group"><label class="form-label" for="userPassword">Password <span class="req">*</span></label>
+            <div class="input-icon"><input type="password" id="userPassword" name="password" class="form-control" placeholder="Min 8 characters"><button type="button" class="toggle-icon" id="toggleUserPassword" aria-label="Show password"></button></div>
+            <div class="invalid-feedback" id="userPassword-error"></div></div>
+          <div class="form-group"><label class="form-label" for="age">Age <span class="req">*</span></label><input type="number" id="age" name="age" class="form-control" min="18" max="60" step="1" placeholder="18 - 60"><div class="invalid-feedback" id="age-error"></div></div>
+        </div>
+
+        <fieldset id="genderGroup"><legend>Gender <span class="req">*</span></legend>
+          <label class="check" for="genderMale"><input type="radio" id="genderMale" name="gender" value="Male"> Male</label>
+          <label class="check" for="genderFemale"><input type="radio" id="genderFemale" name="gender" value="Female"> Female</label>
+          <label class="check" for="genderOther"><input type="radio" id="genderOther" name="gender" value="Other"> Other</label>
+          <div class="invalid-feedback" id="gender-error"></div>
+        </fieldset>
+
+        <h3 class="mb-2 mt-2">Dates &amp; times</h3>
+        <div class="grid-3" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="dob">Date of birth</label><input type="date" id="dob" name="dob" class="form-control"></div>
+          <div class="form-group"><label class="form-label" for="classTime">Preferred class time</label><input type="time" id="classTime" name="classTime" class="form-control"></div>
+          <div class="form-group"><label class="form-label" for="demoSlot">Demo session (date &amp; time)</label><input type="datetime-local" id="demoSlot" name="demoSlot" class="form-control"></div>
+          <div class="form-group"><label class="form-label" for="joinMonth">Joining month</label><input type="month" id="joinMonth" name="joinMonth" class="form-control"></div>
+          <div class="form-group"><label class="form-label" for="joinWeek">Joining week</label><input type="week" id="joinWeek" name="joinWeek" class="form-control"></div>
+          <div class="form-group"><label class="form-label" for="textDate">Date as text (DD/MM/YYYY)</label><input type="text" id="textDate" name="textDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10"><div class="invalid-feedback" id="textDate-error"></div></div>
+        </div>
+
+        <h3 class="mb-2 mt-2">Course details</h3>
+        <div class="grid-2" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="course">Course <span class="req">*</span></label>
+            <select id="course" name="course" class="form-select">
+              <option value="">-- Select a course --</option>
+              <optgroup label="UI Automation">
+                <option value="selenium-java">Selenium with Java</option>
+                <option value="selenium-python">Selenium with Python</option>
+                <option value="playwright-python">Playwright with Python</option>
+                <option value="cypress">Cypress with JavaScript</option>
+              </optgroup>
+              <optgroup label="API Automation">
+                <option value="postman">Postman</option>
+                <option value="rest-assured">Rest Assured</option>
+              </optgroup>
+              <optgroup label="Foundations">
+                <option value="manual">Manual Testing</option>
+                <option value="sql" disabled>SQL for Testers (coming soon)</option>
+              </optgroup>
+            </select>
+            <div class="invalid-feedback" id="course-error"></div></div>
+          <div class="form-group"><label class="form-label" for="batch">Batch</label>
+            <select id="batch" name="batch" class="form-select">
+              <option value="weekday-morning">Weekday - Morning</option>
+              <option value="weekday-evening" selected>Weekday - Evening</option>
+              <option value="weekend">Weekend</option>
+            </select></div>
+          <div class="form-group"><label class="form-label" for="country">Country <span class="req">*</span></label>
+            <select id="country" name="country" class="form-select">
+              <option value="">Select country</option>
+              <option value="IN">India</option>
+              <option value="US">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="AU">Australia</option>
+            </select><div class="invalid-feedback" id="country-error"></div></div>
+          <div class="form-group"><label class="form-label" for="region">State / Region <span class="req">*</span></label>
+            <select id="region" name="region" class="form-select" disabled><option value="">Select country first</option></select>
+            <div class="invalid-feedback" id="region-error"></div></div>
+          <div class="form-group"><label class="form-label" for="city">City</label>
+            <input type="text" id="city" name="city" class="form-control" list="cityOptions" placeholder="Start typing a city">
+            <datalist id="cityOptions"><option value="Hyderabad"><option value="Bengaluru"><option value="Chennai"><option value="Mumbai"><option value="Pune"><option value="Delhi"><option value="Kolkata"></datalist></div>
+          <div class="form-group"><label class="form-label" for="languages">Programming languages known</label>
+            <select id="languages" name="languages" class="form-select" multiple size="4">
+              <option>Java</option><option>Python</option><option>JavaScript</option><option>C#</option><option>TypeScript</option><option>Kotlin</option>
+            </select></div>
+        </div>
+
+        <fieldset id="skillsGroup"><legend>Skills <span class="req">*</span> (pick at least one)</legend>
+          <label class="check" for="skillSelenium"><input type="checkbox" id="skillSelenium" name="skills" value="Selenium"> Selenium</label>
+          <label class="check" for="skillCypress"><input type="checkbox" id="skillCypress" name="skills" value="Cypress"> Cypress</label>
+          <label class="check" for="skillPlaywright"><input type="checkbox" id="skillPlaywright" name="skills" value="Playwright"> Playwright</label>
+          <label class="check" for="skillApi"><input type="checkbox" id="skillApi" name="skills" value="API Testing"> API Testing</label>
+          <label class="check" for="skillJmeter"><input type="checkbox" id="skillJmeter" name="skills" value="JMeter"> JMeter</label>
+          <div class="invalid-feedback" id="skills-error"></div>
+        </fieldset>
+
+        <div class="grid-3" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="experience">Years of experience: <output id="experienceValue" for="experience">2</output></label><input type="range" id="experience" name="experience" min="0" max="20" value="2" style="width:100%"></div>
+          <div class="form-group"><label class="form-label" for="favColor">Favourite colour</label><input type="color" id="favColor" name="favColor" class="form-control" value="#059669"></div>
+          <div class="form-group"><label class="form-label" for="website">Portfolio / GitHub URL</label><input type="url" id="website" name="website" class="form-control" placeholder="https://github.com/you"><div class="invalid-feedback" id="website-error"></div></div>
+        </div>
+
+        <div class="grid-2" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="address">Address</label><textarea id="address" name="address" class="form-control" rows="3" placeholder="House no, street, area"></textarea></div>
+          <div class="form-group"><label class="form-label" for="resume">Resume (PDF or Word, max 2 MB)</label><input type="file" id="resume" name="resume" class="form-control" accept=".pdf,.doc,.docx" style="padding-top:7px"><div class="form-hint" id="resumeName">No file selected</div><div class="invalid-feedback" id="resume-error"></div></div>
+        </div>
+
+        <div class="grid-2" style="gap:16px">
+          <div class="form-group"><label class="form-label" for="referral">Referral code (read-only)</label><input type="text" id="referral" name="referral" class="form-control" value="ROHIT2026" readonly></div>
+          <div class="form-group"><label class="form-label" for="studentId">Student ID (auto-generated, disabled)</label><input type="text" id="studentId" name="studentId" class="form-control" disabled></div>
+        </div>
+
+        <div class="form-group"><label class="form-label" for="captcha">Security check: what is <span id="captchaQuestion">7 + 5</span>? <span class="req">*</span></label><input type="text" id="captcha" name="captcha" class="form-control" style="max-width:140px" inputmode="numeric"><div class="invalid-feedback" id="captcha-error"></div></div>
+
+        <div class="stack mb-2">
+          <label class="switch" for="newsletter"><input type="checkbox" id="newsletter" name="newsletter" checked> Subscribe to the newsletter</label>
+          <label class="check" for="terms"><input type="checkbox" id="terms" name="terms"> I accept the terms and conditions <span class="req">*</span></label>
+          <div class="invalid-feedback" id="terms-error"></div>
+        </div>
+
+        <div class="row">
+          <button type="submit" class="btn btn-primary" id="submitBtn" data-testid="submit-btn">Register</button>
+          <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </form>
+
+      <div id="submissionResult" class="hidden mt-3">
+        <div class="alert alert-success" id="successMessage" role="status">Registration successful!</div>
+        <div class="table-wrap"><table class="table" id="submittedData"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="wizard">
+    <div class="card-header"><div><h2>Multi-step Wizard</h2><p>Next / Back navigation with validation on each step.</p></div></div>
+    <div class="card-body">
+      <div class="stepper" id="wizardSteps">
+        <div class="step active" id="step-indicator-1"><span class="num">1</span>Account</div>
+        <div class="step" id="step-indicator-2"><span class="num">2</span>Address</div>
+        <div class="step" id="step-indicator-3"><span class="num">3</span>Review</div>
+      </div>
+      <form id="wizardForm" novalidate>
+        <div class="wizard-step" id="wizard-step-1">
+          <div class="grid-2" style="gap:16px">
+            <div class="form-group"><label class="form-label" for="wizUsername">Username</label><input id="wizUsername" class="form-control" placeholder="Choose a username"></div>
+            <div class="form-group"><label class="form-label" for="wizEmail">Email</label><input id="wizEmail" type="email" class="form-control" placeholder="name@example.com"></div>
+          </div>
+        </div>
+        <div class="wizard-step hidden" id="wizard-step-2">
+          <div class="grid-3" style="gap:16px">
+            <div class="form-group"><label class="form-label" for="wizStreet">Street</label><input id="wizStreet" class="form-control" placeholder="Street address"></div>
+            <div class="form-group"><label class="form-label" for="wizCity">City</label><input id="wizCity" class="form-control" placeholder="City"></div>
+            <div class="form-group"><label class="form-label" for="wizZip">PIN code</label><input id="wizZip" class="form-control" placeholder="6 digits" maxlength="6"></div>
+          </div>
+        </div>
+        <div class="wizard-step hidden" id="wizard-step-3">
+          <div class="table-wrap"><table class="table" id="wizardReview"><tbody></tbody></table></div>
+        </div>
+        <div id="wizardError" class="error-message"></div>
+        <div id="wizardDone" class="alert alert-success hidden" role="alert"></div>
+        <div class="row mt-1">
+          <button type="button" class="btn btn-secondary" id="wizardBack" disabled>Back</button>
+          <button type="button" class="btn btn-primary" id="wizardNext">Next</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+</body>
+</html>

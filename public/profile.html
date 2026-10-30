@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Profile | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+</head>
+<body data-page="profile" data-title="My Profile" data-auth="required">
+<main class="content" id="content">
+  <div id="flash" class="alert alert-success" role="alert">You logged into a secure area!</div>
+  <div class="page-header">
+    <div><h1>Secure Area</h1><p>This page is only visible after logging in. It reads the <code>session-username</code> cookie.</p></div>
+    <button type="button" class="btn btn-danger" id="logoutBtn">Logout</button>
+  </div>
+  <div class="grid-2">
+    <section class="card">
+      <div class="card-header"><h2>Profile details</h2></div>
+      <div class="card-body">
+        <table class="table" id="profileTable"><tbody>
+          <tr><th>Username</th><td id="profile-username"></td></tr>
+          <tr><th>User type</th><td id="profile-role"></td></tr>
+          <tr><th>Logged in at</th><td id="profile-login-time"></td></tr>
+          <tr><th>Session cookie</th><td><code id="profile-cookie"></code></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+    <section class="card">
+      <div class="card-header"><h2>Preferences</h2></div>
+      <div class="card-body">
+        <form id="prefsForm">
+          <div class="form-group"><label class="form-label" for="displayName">Display name</label><input id="displayName" class="form-control" placeholder="How should we call you?"></div>
+          <div class="form-group"><label class="form-label" for="language">Language</label>
+            <select id="language" class="form-select"><option value="en">English</option><option value="hi">Hindi</option><option value="te">Telugu</option><option value="ta">Tamil</option></select></div>
+          <div class="form-group"><label class="switch" for="emailAlerts"><input type="checkbox" id="emailAlerts"> Email alerts</label></div>
+          <button type="submit" class="btn btn-primary" id="savePrefs">Save preferences</button>
+          <span id="prefsSaved" class="result-text" style="margin-left:10px"></span>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const u = App.currentUser();
+  if (!u) return;
+  const $ = (id) => document.getElementById(id);
+  $("profile-username").textContent = u.username;
+  $("profile-role").textContent = u.role;
+  $("profile-login-time").textContent = u.loginAt ? new Date(u.loginAt).toLocaleString() : "-";
+  $("profile-cookie").textContent = "session-username=" + App.getCookie("session-username");
+  const prefs = App.store.get("rohit.prefs." + u.username, {});
+  $("displayName").value = prefs.displayName || "";
+  $("language").value = prefs.language || "en";
+  $("emailAlerts").checked = Boolean(prefs.emailAlerts);
+  $("prefsForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    App.store.set("rohit.prefs." + u.username, { displayName: $("displayName").value.trim(), language: $("language").value, emailAlerts: $("emailAlerts").checked });
+    $("prefsSaved").textContent = "Preferences saved";
+  });
+  $("logoutBtn").addEventListener("click", () => { App.logout(); location.href = "/index.html?logout=1"; });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebTable | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/webtable.js" defer></script>
+</head>
+<body data-page="webtable" data-title="Web Tables">
+<main class="content" id="content">
+  <div class="page-header">
+    <div>
+      <h1>WebTable Page</h1>
+      <p>Read cells, loop through rows, paginate, sort, search, select rows and edit data.</p>
+    </div>
+  </div>
+
+  <nav class="section-index mb-2" aria-label="Sections on this page">
+    <a href="#paginated">Paginated table</a><a href="#orders">Orders (static)</a><a href="#employees">Employees (dynamic CRUD)</a>
+  </nav>
+
+  <!-- 1. Paginated table -->
+  <section class="card" id="paginated">
+    <div class="card-header">
+      <div><h2>Paginated Table</h2><p>50 people across pages. Collect data from every page.</p></div>
+    </div>
+    <div class="card-body">
+      <div class="table-toolbar">
+        <input type="search" id="tableSearch" class="form-control" placeholder="Search by name or city" style="max-width:280px" aria-label="Search table">
+        <label class="small muted" for="rowsPerPage">Rows per page</label>
+        <select id="rowsPerPage" class="form-select" style="width:90px">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table id="dataTable" class="table">
+          <thead>
+            <tr><th>ID</th><th>Name</th><th>Age</th><th>City</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Alice</td><td>25</td><td>New York</td></tr>
+            <tr><td>2</td><td>Bob</td><td>30</td><td>Los Angeles</td></tr>
+            <tr><td>3</td><td>Charlie</td><td>28</td><td>Chicago</td></tr>
+            <tr><td>4</td><td>David</td><td>35</td><td>Houston</td></tr>
+            <tr><td>5</td><td>Eve</td><td>22</td><td>Miami</td></tr>
+            <tr><td>6</td><td>Frank</td><td>40</td><td>Seattle</td></tr>
+            <tr><td>7</td><td>Grace</td><td>29</td><td>Denver</td></tr>
+            <tr><td>8</td><td>Henry</td><td>33</td><td>Boston</td></tr>
+            <tr><td>9</td><td>Ivy</td><td>26</td><td>San Francisco</td></tr>
+            <tr><td>10</td><td>Jack</td><td>31</td><td>Philadelphia</td></tr>
+            <tr><td>11</td><td>Karen</td><td>27</td><td>Atlanta</td></tr>
+            <tr><td>12</td><td>Liam</td><td>36</td><td>Dallas</td></tr>
+            <tr><td>13</td><td>Mia</td><td>24</td><td>Phoenix</td></tr>
+            <tr><td>14</td><td>Noah</td><td>39</td><td>Detroit</td></tr>
+            <tr><td>15</td><td>Olivia</td><td>23</td><td>Minneapolis</td></tr>
+            <tr><td>16</td><td>Peter</td><td>32</td><td>San Diego</td></tr>
+            <tr><td>17</td><td>Quinn</td><td>28</td><td>Tampa</td></tr>
+            <tr><td>18</td><td>Ryan</td><td>37</td><td>Baltimore</td></tr>
+            <tr><td>19</td><td>Sophia</td><td>21</td><td>St. Louis</td></tr>
+            <tr><td>20</td><td>Thomas</td><td>34</td><td>Orlando</td></tr>
+            <tr><td>21</td><td>Uma</td><td>30</td><td>Raleigh</td></tr>
+            <tr><td>22</td><td>Victor</td><td>25</td><td>Austin</td></tr>
+            <tr><td>23</td><td>Wendy</td><td>38</td><td>Columbus</td></tr>
+            <tr><td>24</td><td>Xavier</td><td>29</td><td>Charlotte</td></tr>
+            <tr><td>25</td><td>Yara</td><td>27</td><td>Indianapolis</td></tr>
+            <tr><td>26</td><td>Zane</td><td>31</td><td>Nashville</td></tr>
+            <tr><td>27</td><td>Abigail</td><td>33</td><td>Milwaukee</td></tr>
+            <tr><td>28</td><td>Benjamin</td><td>26</td><td>Oklahoma City</td></tr>
+            <tr><td>29</td><td>Caleb</td><td>35</td><td>Las Vegas</td></tr>
+            <tr><td>30</td><td>Daisy</td><td>24</td><td>Kansas City</td></tr>
+            <tr><td>31</td><td>Ethan</td><td>39</td><td>Albuquerque</td></tr>
+            <tr><td>32</td><td>Fiona</td><td>23</td><td>Tucson</td></tr>
+            <tr><td>33</td><td>George</td><td>32</td><td>Fresno</td></tr>
+            <tr><td>34</td><td>Hannah</td><td>28</td><td>Sacramento</td></tr>
+            <tr><td>35</td><td>Isaac</td><td>37</td><td>Long Beach</td></tr>
+            <tr><td>36</td><td>Julia</td><td>21</td><td>Mesa</td></tr>
+            <tr><td>37</td><td>Kevin</td><td>34</td><td>Virginia Beach</td></tr>
+            <tr><td>38</td><td>Lily</td><td>30</td><td>Atlanta</td></tr>
+            <tr><td>39</td><td>Mason</td><td>25</td><td>Colorado Springs</td></tr>
+            <tr><td>40</td><td>Nora</td><td>38</td><td>Raleigh</td></tr>
+            <tr><td>41</td><td>Oscar</td><td>29</td><td>Omaha</td></tr>
+            <tr><td>42</td><td>Penelope</td><td>27</td><td>Miami</td></tr>
+            <tr><td>43</td><td>Quentin</td><td>31</td><td>Oakland</td></tr>
+            <tr><td>44</td><td>Riley</td><td>33</td><td>Tulsa</td></tr>
+            <tr><td>45</td><td>Samuel</td><td>26</td><td>Minneapolis</td></tr>
+            <tr><td>46</td><td>Taylor</td><td>35</td><td>Cleveland</td></tr>
+            <tr><td>47</td><td>Ursula</td><td>24</td><td>Wichita</td></tr>
+            <tr><td>48</td><td>Vincent</td><td>39</td><td>Arlington</td></tr>
+            <tr><td>49</td><td>Willow</td><td>23</td><td>New Orleans</td></tr>
+            <tr><td>50</td><td>Wyatt</td><td>32</td><td>Bakersfield</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <nav aria-label="Table pagination">
+        <ul class="pagination" id="pagination"></ul>
+      </nav>
+      <div id="pageInfo" class="small muted" style="text-align:center;margin-top:8px"></div>
+    </div>
+  </section>
+
+  <!-- 2. Orders: static table with checkboxes, actions and a footer total -->
+  <section class="card" id="orders">
+    <div class="card-header">
+      <div><h2>Orders</h2><p>Select rows, read a cell by column name, act on a specific row, sum a column.</p></div>
+      <button type="button" class="btn btn-danger btn-sm" id="deleteSelected" disabled>Delete selected</button>
+    </div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table id="ordersTable" class="table" data-testid="orders-table">
+          <caption id="ordersCaption">5 orders</caption>
+          <thead>
+            <tr>
+              <th style="width:40px"><input type="checkbox" id="selectAll" aria-label="Select all orders"></th>
+              <th>Order ID</th><th>Customer</th><th>Status</th><th>Amount</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-order-id="1001"><td><input type="checkbox" class="row-check" aria-label="Select order 1001"></td><td>1001</td><td>Ravi Kumar</td><td><span class="badge badge-info">Shipped</span></td><td class="amount">250.00</td><td><button type="button" class="btn btn-secondary btn-sm view-btn">View</button></td></tr>
+            <tr data-order-id="1002"><td><input type="checkbox" class="row-check" aria-label="Select order 1002"></td><td>1002</td><td>Asha Rao</td><td><span class="badge badge-warning">Pending</span></td><td class="amount">99.50</td><td><button type="button" class="btn btn-secondary btn-sm view-btn">View</button></td></tr>
+            <tr data-order-id="1003"><td><input type="checkbox" class="row-check" aria-label="Select order 1003"></td><td>1003</td><td>John Smith</td><td><span class="badge badge-success">Delivered</span></td><td class="amount">1200.00</td><td><button type="button" class="btn btn-secondary btn-sm view-btn">View</button></td></tr>
+            <tr data-order-id="1004"><td><input type="checkbox" class="row-check" aria-label="Select order 1004"></td><td>1004</td><td>Meera Iyer</td><td><span class="badge badge-warning">Pending</span></td><td class="amount">450.75</td><td><button type="button" class="btn btn-secondary btn-sm view-btn">View</button></td></tr>
+            <tr data-order-id="1005"><td><input type="checkbox" class="row-check" aria-label="Select order 1005"></td><td>1005</td><td>Arjun Das</td><td><span class="badge badge-danger">Cancelled</span></td><td class="amount">75.00</td><td><button type="button" class="btn btn-secondary btn-sm view-btn">View</button></td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="4" style="text-align:right;font-weight:600">Total</td><td id="ordersTotal" style="font-weight:700">2075.25</td><td></td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <p id="order-detail" class="result-text mt-1"></p>
+    </div>
+  </section>
+
+  <!-- 3. Employees: dynamic CRUD table -->
+  <section class="card" id="employees">
+    <div class="card-header">
+      <div><h2>Employees</h2><p>Sort by clicking a header, search, add, edit and delete rows. Data resets when you reload.</p></div>
+      <button type="button" class="btn btn-primary btn-sm" id="addEmployeeBtn">+ Add Employee</button>
+    </div>
+    <div class="card-body">
+      <form id="employeeForm" class="card hidden" style="padding:16px;background:var(--surface-2)" novalidate>
+        <h3 id="employeeFormTitle">Add Employee</h3>
+        <input type="hidden" id="empId">
+        <div class="grid-4">
+          <div><label class="form-label" for="empName">Name</label><input id="empName" class="form-control" placeholder="Full name"></div>
+          <div><label class="form-label" for="empEmail">Email</label><input id="empEmail" type="email" class="form-control" placeholder="name@company.com"></div>
+          <div><label class="form-label" for="empDept">Department</label>
+            <select id="empDept" class="form-select"><option value="">Select</option><option>QA</option><option>Development</option><option>DevOps</option><option>HR</option><option>Finance</option></select></div>
+          <div><label class="form-label" for="empSalary">Salary</label><input id="empSalary" type="number" min="0" class="form-control" placeholder="50000"></div>
+        </div>
+        <div id="employeeFormError" class="error-message"></div>
+        <div class="row mt-1">
+          <button type="submit" class="btn btn-primary btn-sm" id="saveEmployee">Save</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="cancelEmployee">Cancel</button>
+        </div>
+      </form>
+
+      <div class="table-toolbar">
+        <input type="search" id="employeeSearch" class="form-control" placeholder="Search employees" style="max-width:260px" aria-label="Search employees">
+        <span class="small muted" id="employeeCount"></span>
+      </div>
+      <div class="table-wrap">
+        <table id="employeeTable" class="table">
+          <thead>
+            <tr>
+              <th class="sortable" data-key="id">ID<span class="sort-ind"></span></th>
+              <th class="sortable" data-key="name">Name<span class="sort-ind"></span></th>
+              <th class="sortable" data-key="email">Email<span class="sort-ind"></span></th>
+              <th class="sortable" data-key="department">Department<span class="sort-ind"></span></th>
+              <th class="sortable" data-key="salary">Salary<span class="sort-ind"></span></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parent Frame</title>
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <style>body{background:var(--surface-2);padding:12px}</style>
+</head>
+<body>
+  <h3 id="parentHeading">Parent frame</h3>
+  <label class="form-label" for="parentInput">Parent frame input</label>
+  <input id="parentInput" class="form-control" placeholder="Typed in the parent frame" style="max-width:300px">
+  <iframe id="child-frame" name="child-frame" title="Child frame" src="/frames/child.html" class="frame-box mt-1" height="150"></iframe>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Window</title>
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body style="padding:32px">
+  <h1 id="windowHeading">New Window</h1>
+  <p class="muted" id="windowText">This page was opened in a new browser window. Switch to it, read this text, then close it and switch back.</p>
+  <div class="row">
+    <input id="windowInput" class="form-control" style="max-width:260px" placeholder="Type in the new window">
+    <button type="button" class="btn btn-secondary" id="closeWindowBtn" onclick="window.close()">Close this window</button>
+  </div>
+</body>
+</html>

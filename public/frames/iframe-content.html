@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iframe Content</title>
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <style>body{background:var(--surface);padding:14px}</style>
+</head>
+<body>
+  <h3 id="frameHeading">I am inside an iframe</h3>
+  <form id="frameForm" onsubmit="return false;">
+    <label class="form-label" for="frameInput">Your message</label>
+    <div class="row" style="flex-wrap:nowrap">
+      <input type="text" id="frameInput" name="frameInput" class="form-control" placeholder="Type inside the frame">
+      <button type="submit" id="frameButton" class="btn btn-primary">Submit</button>
+    </div>
+    <label class="check mt-1" for="frameCheckbox"><input type="checkbox" id="frameCheckbox"> I am a checkbox inside the frame</label>
+  </form>
+  <p id="frameResult" class="result-text mt-1"></p>
+  <script>
+    document.getElementById("frameButton").addEventListener("click", function () {
+      const v = document.getElementById("frameInput").value.trim();
+      document.getElementById("frameResult").textContent = v ? "You submitted: " + v : "Please type something first";
+    });
+  </script>
+</body>
+</html>

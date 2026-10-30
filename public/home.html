@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Overview | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+</head>
+<body data-page="home" data-title="Overview">
+<main class="content" id="content">
+  <div class="page-header">
+    <div><h1 id="welcome-heading">Welcome to Automation With Rohit</h1><p>Pick a practice area. Every page works with Selenium, Cypress, Playwright and any other browser automation tool.</p></div>
+    <div class="row"><a class="btn btn-secondary" href="/api.html">Open API Playground</a><a class="btn btn-primary" href="/dashboard/dashboard.html">Start practising</a></div>
+  </div>
+  <div class="grid-4 mb-2" id="stats">
+    <div class="card stat mb-0"><div class="label">Practice pages</div><div class="value" id="stat-pages">14</div><div class="delta">+ 3 study labs</div></div>
+    <div class="card stat mb-0"><div class="label">Element types</div><div class="value" id="stat-elements">60+</div><div class="delta">inputs to shadow DOM</div></div>
+    <div class="card stat mb-0"><div class="label">API endpoints</div><div class="value" id="stat-endpoints">18</div><div class="delta">GET · POST · PUT · PATCH · DELETE</div></div>
+    <div class="card stat mb-0"><div class="label">Tools supported</div><div class="value" id="stat-tools">6+</div><div class="delta">UI and API</div></div>
+  </div>
+  <h2 class="mt-3 mb-2">UI practice</h2>
+  <div class="grid-3" id="ui-cards">
+      <a class="card feature-card" id="card-elements" href="/dashboard/dashboard.html"><div class="ico" data-icon="grid"></div><h3>Practice Elements</h3><p>Inputs, radios, checkboxes, dropdowns, uploads, mouse actions, alerts, waits and shadow DOM.</p></a>
+      <a class="card feature-card" id="card-forms" href="/forms.html"><div class="ico" data-icon="form"></div><h3>Forms</h3><p>Every HTML5 input type, validation messages, a multi-step wizard and a summary of submitted data.</p></a>
+      <a class="card feature-card" id="card-components" href="/components.html"><div class="ico" data-icon="layers"></div><h3>UI Components</h3><p>Tabs, accordion, modal, tooltip, toast, carousel, rating, tags input, progress bar and more.</p></a>
+      <a class="card feature-card" id="card-webtable" href="/webTable.html"><div class="ico" data-icon="table"></div><h3>Web Tables</h3><p>Pagination, sorting, searching, row selection and full add / edit / delete in a table.</p></a>
+      <a class="card feature-card" id="card-waits" href="/waits.html"><div class="ico" data-icon="clock"></div><h3>Waits & Dynamic</h3><p>Delayed elements, spinners, AJAX calls, add/remove elements, infinite scroll and changing text.</p></a>
+      <a class="card feature-card" id="card-frames" href="/frames.html"><div class="ico" data-icon="window"></div><h3>Frames & Windows</h3><p>Single, nested and srcdoc iframes, new tabs, popup windows and multiple windows.</p></a>
+      <a class="card feature-card" id="card-advanced" href="/advanced.html"><div class="ico" data-icon="cpu"></div><h3>Advanced Elements</h3><p>Nested shadow DOM, keyboard events, SVG, canvas, downloads, cookies, broken images and more.</p></a>
+      <a class="card feature-card" id="card-store" href="/store/store.html"><div class="ico" data-icon="bag"></div><h3>Shop (E-commerce)</h3><p>Product listing, filters, sorting, cart and a 3-step checkout — great for Page Object Model projects.</p></a>
+      <a class="card feature-card" id="card-profile" href="/profile.html"><div class="ico" data-icon="lock"></div><h3>Secure Area</h3><p>A page that needs login. Practise cookies, session reuse and storage_state.</p></a>
+  </div>
+  <h2 class="mt-3 mb-2">API &amp; study labs</h2>
+  <div class="grid-3" id="api-cards">
+      <a class="card feature-card" id="card-api" href="/api.html"><div class="ico" data-icon="api"></div><h3>API Playground</h3><p>Users CRUD, token auth, products, cart, orders, status codes and delays. Download the Postman collection.</p></a>
+      <a class="card feature-card" id="card-basicauth" href="/basic-auth"><div class="ico" data-icon="shield"></div><h3>HTTP Basic Auth</h3><p>A page protected by the browser's username/password dialog (admin / admin).</p></a>
+      <a class="card feature-card" id="card-labs" href="/practice-form.html"><div class="ico" data-icon="flask"></div><h3>Study Labs</h3><p>The exact practice pages from the Playwright with Python study material: practice form, widgets and mini shop.</p></a>
+  </div>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-icon]").forEach((el) => (el.innerHTML = App.icon(el.dataset.icon)));
+  const u = App.currentUser();
+  if (u) document.getElementById("welcome-heading").textContent = "Welcome back, " + u.username;
+});
+</script>
+</body>
+</html>

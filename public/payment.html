@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Payment</title><link rel="stylesheet" href="/assets/css/lab.css"><style>body{background:#fff;padding:10px 14px}</style></head>
+<body>
+  <label for="card">Card number</label>
+  <input id="card" placeholder="1111 2222 3333 4444">
+  <button type="button" onclick="document.getElementById('pay-msg').textContent = 'Paid with card ending ' + document.getElementById('card').value.slice(-4)">Pay</button>
+  <p id="pay-msg"></p>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Your Cart | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/store.js" defer></script>
+</head>
+<body data-page="cart" data-title="Cart">
+<main class="content" id="content">
+  <div class="page-header"><div><h1 id="cart-title">Your Cart</h1><p>Change quantities, remove items and continue to checkout.</p></div></div>
+  <div class="grid-2" style="grid-template-columns:1.6fr 1fr;align-items:start">
+    <section class="card">
+      <div class="card-body" id="cartContents">
+        <div class="table-wrap" id="cartTableWrap">
+          <table class="table cart_list" id="cartTable" data-testid="cart-list">
+            <thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="empty-state hidden" id="emptyCart"><h3>Your cart is empty</h3><p>Add some products from the shop.</p></div>
+      </div>
+      <div class="card-footer row" style="justify-content:space-between">
+        <a href="/store/store.html" class="btn btn-secondary" id="continueShopping" data-testid="continue-shopping">Continue Shopping</a>
+        <button type="button" class="btn btn-ghost" id="clearCart" style="color:var(--danger)">Clear cart</button>
+      </div>
+    </section>
+    <aside class="card">
+      <div class="card-header"><h2>Order summary</h2></div>
+      <div class="card-body">
+        <div class="summary-line"><span>Items</span><span id="summaryItems">0</span></div>
+        <div class="summary-line"><span>Subtotal</span><span id="summarySubtotal">$0.00</span></div>
+        <div class="summary-line"><span>Tax (8%)</span><span id="summaryTax">$0.00</span></div>
+        <div class="summary-line total"><span>Total</span><span id="summaryTotal">$0.00</span></div>
+        <button type="button" class="btn btn-primary btn-block btn-lg mt-2" id="checkoutBtn" data-testid="checkout">Checkout</button>
+      </div>
+    </aside>
+  </div>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (id) => document.getElementById(id);
+  function render() {
+    const items = App.cart.items();
+    const t = Store.totals(items);
+    $("cartTable").tBodies[0].innerHTML = items.map((i) => {
+      const s = Store.slug(i.name);
+      return '<tr class="cart_item cart-item" data-product-id="' + i.id + '">' +
+        '<td><div class="row" style="flex-wrap:nowrap"><img src="' + i.image + '" alt="' + App.escapeHtml(i.name) + '" width="56" height="42" style="border-radius:6px;object-fit:cover"><a class="inventory_item_name item-name" href="/store/product.html?id=' + i.id + '">' + App.escapeHtml(i.name) + '</a></div></td>' +
+        '<td class="item-price">' + App.money(i.price) + '</td>' +
+        '<td><div class="qty"><button type="button" data-act="minus" aria-label="Decrease ' + App.escapeHtml(i.name) + '">−</button><input class="item-qty" id="qty-' + s + '" value="' + i.qty + '" aria-label="Quantity of ' + App.escapeHtml(i.name) + '" inputmode="numeric"><button type="button" data-act="plus" aria-label="Increase ' + App.escapeHtml(i.name) + '">+</button></div></td>' +
+        '<td class="item-total">' + App.money(i.price * i.qty) + '</td>' +
+        '<td><button type="button" class="btn btn-ghost btn-sm" data-act="remove" id="remove-' + s + '" data-testid="remove-' + s + '" style="color:var(--danger)">Remove</button></td></tr>';
+    }).join("");
+    $("cartTableWrap").classList.toggle("hidden", items.length === 0);
+    $("emptyCart").classList.toggle("hidden", items.length > 0);
+    $("summaryItems").textContent = App.cart.count();
+    $("summarySubtotal").textContent = App.money(t.subtotal);
+    $("summaryTax").textContent = App.money(t.tax);
+    $("summaryTotal").textContent = App.money(t.total);
+    $("checkoutBtn").disabled = items.length === 0;
+  }
+  $("cartTable").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-act]");
+    if (!b) return;
+    const id = Number(b.closest("tr").dataset.productId);
+    const it = App.cart.items().find((x) => x.id === id);
+    if (b.dataset.act === "remove") App.cart.remove(id);
+    if (b.dataset.act === "plus") App.cart.setQty(id, it.qty + 1);
+    if (b.dataset.act === "minus") App.cart.setQty(id, it.qty - 1);
+    render();
+  });
+  $("cartTable").addEventListener("change", (e) => {
+    if (!e.target.classList.contains("item-qty")) return;
+    App.cart.setQty(Number(e.target.closest("tr").dataset.productId), parseInt(e.target.value, 10) || 1);
+    render();
+  });
+  $("clearCart").addEventListener("click", () => { if (confirm("Remove all items from the cart?")) { App.cart.clear(); render(); } });
+  $("checkoutBtn").addEventListener("click", () => (location.href = "/store/checkout.html"));
+  render();
+});
+</script>
+</body>
+</html>

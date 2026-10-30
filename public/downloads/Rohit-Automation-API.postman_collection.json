@@ -1,0 +1,1948 @@
+{
+  "info": {
+    "_postman_id": "fa4f109b-01e9-56e0-9e11-d71b5b081934",
+    "name": "Automation With Rohit - Practice API",
+    "description": "Practice REST API for GET, POST, PUT, PATCH and DELETE.\n\nStart the server with `node server.js`, import this collection and the environment, then run the whole collection with the Collection Runner (requests are ordered so they pass top to bottom).\n\nLogin: admin / admin@1234",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Auth",
+      "item": [
+        {
+          "name": "C1001 - Login with valid credentials",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1001\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"token\", \"token_type\", \"expires_in\", \"user\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.token).to.be.a(\"string\");",
+                  "    pm.expect(responseData.token_type).to.be.a(\"string\");",
+                  "    pm.expect(responseData.expires_in).to.be.a(\"number\");",
+                  "    pm.expect(responseData.user).to.be.an(\"object\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.token).to.not.be.empty;",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.token_type, `Expected token_type: Bearer, Actual token_type: ${responseData.token_type}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Bearer\");",
+                  "    pm.expect(responseData.expires_in, `Expected expires_in: 86400, Actual expires_in: ${responseData.expires_in}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(86400);",
+                  "    pm.expect(responseData.user.username, `Expected user.username: admin, Actual user.username: ${responseData.user.username}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"admin\");",
+                  "    pm.expect(responseData.user.role, `Expected user.role: admin, Actual user.role: ${responseData.user.role}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"admin\");",
+                  "});",
+                  "",
+                  "// Save values for the next requests",
+                  "pm.collectionVariables.set(\"token\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Returns a Bearer token valid for 24 hours. The test saves it to {{token}}.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin@1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1002 - Login with wrong password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1002\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 401, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(401);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: Invalid username or password, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"Invalid username or password\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"wrong\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1003 - Login with missing fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1003\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 400, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(400);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: required, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"required\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1004 - Login with locked user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1004\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 403, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(403);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: locked, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"locked\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"locked_user\",\n  \"password\": \"admin@1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1005 - Get current user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1005\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"username\", \"name\", \"role\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.username).to.be.a(\"string\");",
+                  "    pm.expect(responseData.role).to.be.a(\"string\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.username, `Expected username: admin, Actual username: ${responseData.username}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"admin\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Users CRUD",
+      "item": [
+        {
+          "name": "C1006 - Get all users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1006\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"page\", \"limit\", \"total\", \"total_pages\", \"data\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.page).to.be.a(\"number\");",
+                  "    pm.expect(responseData.total).to.be.a(\"number\");",
+                  "    pm.expect(responseData.data).to.be.an(\"array\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.data).to.not.be.empty;",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.page, `Expected page: 1, Actual page: ${responseData.page}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(1);",
+                  "    pm.expect(responseData.limit, `Expected limit: 10, Actual limit: ${responseData.limit}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(10);",
+                  "",
+                  "    pm.expect(responseData.data[0]).to.have.keys([\"id\", \"name\", \"email\", \"job\", \"city\", \"status\", \"created_at\"]);",
+                  "    pm.expect(responseData.data.length, `Expected at most 10 users, Actual: ${responseData.data.length}, Response_Body: ${JSON.stringify(responseData)}`).to.be.at.most(10);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1007 - Get users page 2 with limit 5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1007\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"page\", \"limit\", \"total\", \"total_pages\", \"data\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.page, `Expected page: 2, Actual page: ${responseData.page}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(2);",
+                  "    pm.expect(responseData.limit, `Expected limit: 5, Actual limit: ${responseData.limit}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(5);",
+                  "    pm.expect(responseData.data.length, `Expected data.length: 5, Actual data.length: ${responseData.data.length}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(5);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=2&limit=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1008 - Filter users by status and city",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1008\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"page\", \"limit\", \"total\", \"total_pages\", \"data\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.data).to.not.be.empty;",
+                  "",
+                  "    responseData.data.forEach(u => {",
+                  "        pm.expect(u.status, `Expected Status: active, Actual: ${u.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"active\");",
+                  "        pm.expect(u.city, `Expected City: Hyderabad, Actual: ${u.city}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Hyderabad\");",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?status=active&city=Hyderabad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "city",
+                  "value": "Hyderabad"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1009 - Get single user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1009\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"id\", \"name\", \"email\", \"job\", \"city\", \"status\", \"created_at\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.id).to.be.a(\"number\");",
+                  "    pm.expect(responseData.name).to.be.a(\"string\");",
+                  "    pm.expect(responseData.email).to.be.a(\"string\");",
+                  "    pm.expect(responseData.job).to.be.a(\"string\");",
+                  "    pm.expect(responseData.city).to.be.a(\"string\");",
+                  "    pm.expect(responseData.status).to.be.a(\"string\");",
+                  "    pm.expect(responseData.created_at).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.name).to.not.be.empty;",
+                  "    pm.expect(responseData.email).to.not.be.empty;",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.id, `Expected id: 1, Actual id: ${responseData.id}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(1);",
+                  "    pm.expect(responseData.name, `Expected name: Ravi Kumar, Actual name: ${responseData.name}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Ravi Kumar\");",
+                  "    pm.expect(responseData.email, `Expected email: ravi.kumar@example.com, Actual email: ${responseData.email}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"ravi.kumar@example.com\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1010 - Get user that does not exist",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1010\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 404, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(404);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: not found, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "999"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1011 - Create user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1011\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 201, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(201);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"id\", \"name\", \"email\", \"job\", \"city\", \"status\", \"created_at\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.id).to.be.a(\"number\");",
+                  "    pm.expect(responseData.name).to.be.a(\"string\");",
+                  "    pm.expect(responseData.email).to.be.a(\"string\");",
+                  "    pm.expect(responseData.job).to.be.a(\"string\");",
+                  "    pm.expect(responseData.city).to.be.a(\"string\");",
+                  "    pm.expect(responseData.status).to.be.a(\"string\");",
+                  "    pm.expect(responseData.created_at).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.name).to.not.be.empty;",
+                  "    pm.expect(responseData.email).to.not.be.empty;",
+                  "    pm.expect(responseData.created_at).to.not.be.empty;",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.name, `Expected name: Rohit Sinha, Actual name: ${responseData.name}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Rohit Sinha\");",
+                  "    pm.expect(responseData.job, `Expected job: Automation Trainer, Actual job: ${responseData.job}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Automation Trainer\");",
+                  "    pm.expect(responseData.city, `Expected city: Hyderabad, Actual city: ${responseData.city}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Hyderabad\");",
+                  "    pm.expect(responseData.status, `Expected status: active, Actual status: ${responseData.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"active\");",
+                  "",
+                  "    pm.expect(pm.response.headers.get(\"Location\"), `Expected Location header, Response_Body: ${JSON.stringify(responseData)}`).to.eql(`/api/users/${responseData.id}`);",
+                  "});",
+                  "",
+                  "// Save values for the next requests",
+                  "pm.collectionVariables.set(\"userId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Creates a user with a unique email. The test saves the new id to {{userId}}.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rohit Sinha\",\n  \"email\": \"rohit.{{$timestamp}}@example.com\",\n  \"job\": \"Automation Trainer\",\n  \"city\": \"Hyderabad\",\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1012 - Create user with duplicate email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1012\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 409, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(409);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: already exists, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"already exists\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ravi Again\",\n  \"email\": \"ravi.kumar@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1013 - Create user with missing fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1013\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 400, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(400);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"error\", \"details\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "    pm.expect(responseData.details).to.be.an(\"array\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.details).to.not.be.empty;",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.error, `Expected error: Validation failed, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Validation failed\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1014 - Update user (PUT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1014\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"id\", \"name\", \"email\", \"job\", \"city\", \"status\", \"created_at\", \"updated_at\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.id).to.be.a(\"number\");",
+                  "    pm.expect(responseData.name).to.be.a(\"string\");",
+                  "    pm.expect(responseData.email).to.be.a(\"string\");",
+                  "    pm.expect(responseData.job).to.be.a(\"string\");",
+                  "    pm.expect(responseData.city).to.be.a(\"string\");",
+                  "    pm.expect(responseData.status).to.be.a(\"string\");",
+                  "    pm.expect(responseData.created_at).to.be.a(\"string\");",
+                  "    pm.expect(responseData.updated_at).to.be.a(\"string\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.id, `Expected id: ${Number(pm.collectionVariables.get(\"userId\"))}, Actual id: ${responseData.id}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(Number(pm.collectionVariables.get(\"userId\")));",
+                  "    pm.expect(responseData.name, `Expected name: Rohit Sinha Updated, Actual name: ${responseData.name}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Rohit Sinha Updated\");",
+                  "    pm.expect(responseData.job, `Expected job: Lead Trainer, Actual job: ${responseData.job}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Lead Trainer\");",
+                  "    pm.expect(responseData.city, `Expected city: Bengaluru, Actual city: ${responseData.city}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Bengaluru\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rohit Sinha Updated\",\n  \"email\": \"rohit.updated.{{$timestamp}}@example.com\",\n  \"job\": \"Lead Trainer\",\n  \"city\": \"Bengaluru\",\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1015 - Partially update user (PATCH)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1015\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"id\", \"name\", \"email\", \"job\", \"city\", \"status\", \"created_at\", \"updated_at\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.status, `Expected status: inactive, Actual status: ${responseData.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"inactive\");",
+                  "    pm.expect(responseData.job, `Expected job: QA Manager, Actual job: ${responseData.job}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"QA Manager\");",
+                  "    pm.expect(responseData.city, `Expected city: Bengaluru, Actual city: ${responseData.city}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Bengaluru\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"inactive\",\n  \"job\": \"QA Manager\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1016 - Update user without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1016\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 401, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(401);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: missing, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"missing\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"No Token\",\n  \"email\": \"no.token@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1017 - Delete user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1017\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"message\", \"id\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.message).to.be.a(\"string\");",
+                  "    pm.expect(responseData.id).to.be.a(\"number\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.id, `Expected id: ${Number(pm.collectionVariables.get(\"userId\"))}, Actual id: ${responseData.id}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(Number(pm.collectionVariables.get(\"userId\")));",
+                  "    pm.expect(responseData.message, `Expected message: ${`User ${pm.collectionVariables.get(\"userId\")} deleted successfully`}, Actual message: ${responseData.message}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(`User ${pm.collectionVariables.get(\"userId\")} deleted successfully`);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1018 - Get deleted user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1018\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 404, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(404);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: not found, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1019 - Delete user without token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1019\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 401, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(401);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: missing, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"missing\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Products",
+      "item": [
+        {
+          "name": "C1020 - Get all products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1020\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"total\", \"data\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.total).to.be.a(\"number\");",
+                  "    pm.expect(responseData.data).to.be.an(\"array\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.total, `Expected total: 12, Actual total: ${responseData.total}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(12);",
+                  "",
+                  "    pm.expect(responseData.data[0]).to.have.keys([\"id\", \"name\", \"price\", \"category\", \"stock\", \"rating\", \"description\", \"image\"]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1021 - Filter and sort products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1021\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"total\", \"data\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.data).to.not.be.empty;",
+                  "",
+                  "    const prices = responseData.data.map(p => p.price);",
+                  "    pm.expect(prices, `Expected prices sorted ascending, Actual: ${prices}, Response_Body: ${JSON.stringify(responseData)}`).to.eql([...prices].sort((a, b) => a - b));",
+                  "    responseData.data.forEach(p => pm.expect(p.category).to.eql(\"Clothing\"));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products?category=Clothing&sort=price_asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Clothing"
+                },
+                {
+                  "key": "sort",
+                  "value": "price_asc"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1022 - Get single product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1022\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"id\", \"name\", \"price\", \"category\", \"stock\", \"rating\", \"description\", \"image\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.id).to.be.a(\"number\");",
+                  "    pm.expect(responseData.price).to.be.a(\"number\");",
+                  "    pm.expect(responseData.name).to.be.a(\"string\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.id, `Expected id: 3, Actual id: ${responseData.id}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(3);",
+                  "    pm.expect(responseData.name, `Expected name: Bolt T-Shirt, Actual name: ${responseData.name}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Bolt T-Shirt\");",
+                  "    pm.expect(responseData.price, `Expected price: 15.99, Actual price: ${responseData.price}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(15.99);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "3"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1023 - Get product that does not exist",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1023\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 404, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(404);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: not found, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"not found\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "999"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Cart & Orders",
+      "item": [
+        {
+          "name": "C1024 - Add product to cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1024\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"message\", \"item\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.message).to.be.a(\"string\");",
+                  "    pm.expect(responseData.item).to.be.an(\"object\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.message, `Expected message: Added Bike Light to cart, Actual message: ${responseData.message}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"Added Bike Light to cart\");",
+                  "    pm.expect(responseData.item.qty, `Expected item.qty: 1, Actual item.qty: ${responseData.item.qty}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(1);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 2,\n  \"qty\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1025 - Add out-of-stock product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1025\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 409, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(409);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.error).to.be.a(\"string\");",
+                  "",
+                  "    // Not empty",
+                  "    pm.expect(responseData.error).to.not.be.empty;",
+                  "",
+                  "    pm.expect(responseData.error, `Expected error to include: out of stock, Actual error: ${responseData.error}, Response_Body: ${JSON.stringify(responseData)}`).to.include(\"out of stock\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 4,\n  \"qty\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1026 - Place order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1026\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 201, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(201);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"order_id\", \"status\", \"customer\", \"items\", \"subtotal\", \"tax\", \"total\", \"created_at\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Data types",
+                  "    pm.expect(responseData.order_id).to.be.a(\"number\");",
+                  "    pm.expect(responseData.items).to.be.an(\"array\");",
+                  "    pm.expect(responseData.total).to.be.a(\"number\");",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.status, `Expected status: CONFIRMED, Actual status: ${responseData.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"CONFIRMED\");",
+                  "    pm.expect(responseData.subtotal, `Expected subtotal: 75.97, Actual subtotal: ${responseData.subtotal}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(75.97);",
+                  "    pm.expect(responseData.tax, `Expected tax: 6.08, Actual tax: ${responseData.tax}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(6.08);",
+                  "    pm.expect(responseData.total, `Expected total: 82.05, Actual total: ${responseData.total}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(82.05);",
+                  "});",
+                  "",
+                  "// Save values for the next requests",
+                  "pm.collectionVariables.set(\"orderId\", pm.response.json().order_id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": {\n    \"first_name\": \"Ravi\",\n    \"last_name\": \"Kumar\",\n    \"postal_code\": \"500081\"\n  },\n  \"items\": [\n    {\n      \"id\": 1,\n      \"qty\": 2\n    },\n    {\n      \"id\": 3,\n      \"qty\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1027 - Get order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1027\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"order_id\", \"status\", \"customer\", \"items\", \"subtotal\", \"tax\", \"total\", \"created_at\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.order_id, `Expected order_id: ${Number(pm.collectionVariables.get(\"orderId\"))}, Actual order_id: ${responseData.order_id}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(Number(pm.collectionVariables.get(\"orderId\")));",
+                  "    pm.expect(responseData.status, `Expected status: CONFIRMED, Actual status: ${responseData.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"CONFIRMED\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "{{orderId}}"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Utilities",
+      "item": [
+        {
+          "name": "C1028 - Health check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1028\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"status\", \"timestamp\", \"uptime_seconds\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.status, `Expected status: UP, Actual status: ${responseData.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"UP\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1029 - Echo request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1029\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"method\", \"path\", \"query\", \"headers\", \"body\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.method, `Expected method: POST, Actual method: ${responseData.method}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"POST\");",
+                  "    pm.expect(responseData.query.source, `Expected query.source: postman, Actual query.source: ${responseData.query.source}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"postman\");",
+                  "    pm.expect(responseData.body.hello, `Expected body.hello: world, Actual body.hello: ${responseData.body.hello}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(\"world\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/echo?source=postman",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "echo"
+              ],
+              "query": [
+                {
+                  "key": "source",
+                  "value": "postman"
+                }
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hello\": \"world\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1030 - Status code on demand",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1030\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 503, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(503);",
+                  "    pm.response.to.be.json;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"status\", \"message\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.status, `Expected status: 503, Actual status: ${responseData.status}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(503);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/status/503",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "status",
+                "503"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1031 - Slow response",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1031\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"message\", \"delayed_seconds\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.delayed_seconds, `Expected delayed_seconds: 2, Actual delayed_seconds: ${responseData.delayed_seconds}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(2);",
+                  "",
+                  "    pm.expect(pm.response.responseTime, `Expected response time >= 2000 ms, Actual: ${pm.response.responseTime}`).to.be.at.least(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/delay/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "delay",
+                "2"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "C1032 - Reset all data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// RESPONSE DATA TESTS",
+                  "pm.test(\"Verify_the_response_data_C1032\", function () {",
+                  "    pm.expect(pm.response.code, `Expected Status: 200, Actual Status: ${pm.response.code}, Response_Body: ${JSON.stringify(pm.response.json())}`).to.eql(200);",
+                  "    pm.response.to.be.json;",
+                  "    pm.response.to.not.be.error;",
+                  "",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    // Structure",
+                  "    const expectedFields = [\"message\", \"users\", \"products\"];",
+                  "    pm.expect(responseData).to.have.keys(expectedFields);",
+                  "",
+                  "    // Values",
+                  "    pm.expect(responseData.users, `Expected users: 12, Actual users: ${responseData.users}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(12);",
+                  "    pm.expect(responseData.products, `Expected products: 12, Actual products: ${responseData.products}, Response_Body: ${JSON.stringify(responseData)}`).to.eql(12);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reset"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    }
+  ]
+}

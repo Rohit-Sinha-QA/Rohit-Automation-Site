@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frames &amp; Windows | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+</head>
+<body data-page="frames" data-title="Frames & Windows">
+<main class="content" id="content">
+  <div class="page-header"><div><h1>Frames &amp; Windows</h1><p>All frames are on the same domain, so Cypress can reach inside them too.</p></div></div>
+
+  <div class="grid-2">
+    <section class="card" id="single-frame">
+      <div class="card-header"><div><h2>Single iframe</h2><p><code>id="single-iframe"</code> · <code>name="single-iframe"</code></p></div></div>
+      <div class="card-body"><iframe id="single-iframe" name="single-iframe" title="Single iframe" src="/frames/iframe-content.html" class="frame-box" height="230"></iframe></div>
+    </section>
+    <section class="card" id="nested-frames">
+      <div class="card-header"><div><h2>Nested iframes</h2><p>Parent <code>#parent-frame</code> → child <code>#child-frame</code></p></div></div>
+      <div class="card-body"><iframe id="parent-frame" name="parent-frame" title="Parent frame" src="/frames/parent.html" class="frame-box" height="330"></iframe></div>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" id="srcdoc-frame">
+      <div class="card-header"><div><h2>srcdoc iframe (no URL)</h2><p>Content is written inline with the <code>srcdoc</code> attribute.</p></div></div>
+      <div class="card-body">
+        <iframe id="srcdoc-iframe" title="Inline frame" class="frame-box" height="140" srcdoc="<html><body style='font-family:system-ui,sans-serif;padding:10px'><p id='srcdocText'>Hello from a srcdoc frame</p><button id='srcdocBtn' onclick=&quot;document.getElementById('srcdocText').textContent='Button inside srcdoc clicked'&quot;>Click inside</button></body></html>"></iframe>
+      </div>
+    </section>
+    <section class="card" id="frame-count">
+      <div class="card-header"><div><h2>Main page content</h2><p>Switch back to the main document to use these.</p></div></div>
+      <div class="card-body">
+        <label class="form-label" for="mainPageInput">Main page input</label>
+        <input id="mainPageInput" class="form-control" placeholder="I am on the main page, not in a frame">
+        <p class="small muted mt-1">This page contains <b id="iframeCount">4</b> iframes in total (including the nested one).</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="windows">
+    <div class="card-header"><div><h2>Tabs &amp; Windows</h2><p>Capture new pages, switch between them and close them.</p></div></div>
+    <div class="practice-list">
+      <div class="practice-row"><div class="label-cell form-label">New tab (link):</div><div class="control"><a href="/frames/new-window.html" target="_blank" id="openNewTabLink">Open new tab</a></div></div>
+      <div class="practice-row"><div class="label-cell form-label">New tab (button):</div><div class="control"><button type="button" class="btn btn-secondary" id="openNewTabBtn">Open new tab</button></div></div>
+      <div class="practice-row"><div class="label-cell form-label">Popup window:</div><div class="control"><button type="button" class="btn btn-secondary" id="openPopupBtn">Open popup window</button></div></div>
+      <div class="practice-row"><div class="label-cell form-label">Multiple windows:</div><div class="control"><button type="button" class="btn btn-secondary" id="openMultipleBtn">Open 3 windows</button><span class="small muted">Opens the Overview, Web Tables and Shop pages</span></div></div>
+      <div class="practice-row"><div class="label-cell form-label">Window count:</div><div class="control"><span id="windowsOpened" class="result-text">0 windows opened from this page</span></div></div>
+    </div>
+  </section>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  let opened = 0;
+  const count = (n) => { opened += n; document.getElementById("windowsOpened").textContent = opened + " window" + (opened === 1 ? "" : "s") + " opened from this page"; };
+  document.getElementById("openNewTabLink").addEventListener("click", () => count(1));
+  document.getElementById("openNewTabBtn").addEventListener("click", () => { window.open("/frames/new-window.html", "_blank"); count(1); });
+  document.getElementById("openPopupBtn").addEventListener("click", () => { window.open("/frames/new-window.html", "popupWindow", "width=640,height=420"); count(1); });
+  document.getElementById("openMultipleBtn").addEventListener("click", () => {
+    ["/home.html", "/webTable.html", "/store/store.html"].forEach((u, i) => window.open(u, "win" + i, "width=900,height=640"));
+    count(3);
+  });
+});
+</script>
+</body>
+</html>

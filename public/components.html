@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Components | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/components.js" defer></script>
+  <style>
+    .menu-bar { display: flex; gap: 4px; }
+    .menu-item { position: relative; }
+    .menu-item > .btn { height: 36px; }
+    .submenu { display: none; position: absolute; top: 100%; left: 0; min-width: 190px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-lg); z-index: 20; }
+    .submenu .submenu { top: -6px; left: 100%; }
+    .menu-item:hover > .submenu, .menu-item.hovered > .submenu { display: block; }
+    .submenu .menu-item > a, .submenu > a { display: flex; justify-content: space-between; padding: 7px 10px; border-radius: 6px; color: var(--text); }
+    .submenu a:hover { background: var(--surface-3); text-decoration: none; }
+  </style>
+</head>
+<body data-page="components" data-title="UI Components">
+<main class="content" id="content">
+  <div class="page-header"><div><h1>UI Components</h1><p>Custom widgets you meet in real applications. All built from plain HTML so every tool can reach them.</p></div></div>
+
+  <nav class="section-index mb-2" aria-label="Sections on this page">
+    <a href="#tabs-section">Tabs</a><a href="#accordion-section">Accordion</a><a href="#modal-section">Modal &amp; Toast</a><a href="#menus-section">Menus</a>
+    <a href="#progress-section">Progress</a><a href="#carousel-section">Carousel</a><a href="#rating-section">Rating &amp; Tags</a><a href="#misc-section">Counter &amp; Clipboard</a>
+  </nav>
+
+  <div class="grid-2">
+    <section class="card" id="tabs-section">
+      <div class="card-header"><h2>Tabs</h2></div>
+      <div class="card-body">
+        <div class="tabs" role="tablist" aria-label="Course tabs">
+          <button type="button" class="tab" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true">Overview</button>
+          <button type="button" class="tab" role="tab" id="tab-syllabus" aria-controls="panel-syllabus" aria-selected="false">Syllabus</button>
+          <button type="button" class="tab" role="tab" id="tab-reviews" aria-controls="panel-reviews" aria-selected="false">Reviews</button>
+        </div>
+        <div class="tab-panel" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview"><p>Learn UI and API automation from scratch with real projects.</p></div>
+        <div class="tab-panel" role="tabpanel" id="panel-syllabus" aria-labelledby="tab-syllabus" hidden><ol id="syllabusList" style="margin:0;padding-left:18px"><li>Locators</li><li>Actions &amp; waits</li><li>Frameworks (POM)</li><li>API testing</li><li>CI/CD with Jenkins</li></ol></div>
+        <div class="tab-panel" role="tabpanel" id="panel-reviews" aria-labelledby="tab-reviews" hidden><p id="reviewText">"Best hands-on automation course I have taken." — A student</p></div>
+      </div>
+    </section>
+
+    <section class="card" id="accordion-section">
+      <div class="card-header"><h2>Accordion (FAQ)</h2></div>
+      <div class="card-body" id="faqAccordion">
+        <div class="accordion-item"><button type="button" class="accordion-button" id="faq-1-btn" aria-expanded="false" aria-controls="faq-1">Do I need coding experience?</button><div class="accordion-panel" id="faq-1" hidden>No. We start with the basics of Java or Python before automation.</div></div>
+        <div class="accordion-item"><button type="button" class="accordion-button" id="faq-2-btn" aria-expanded="false" aria-controls="faq-2">Which tools are covered?</button><div class="accordion-panel" id="faq-2" hidden>Selenium, Playwright, Cypress, Postman and Jenkins.</div></div>
+        <div class="accordion-item"><button type="button" class="accordion-button" id="faq-3-btn" aria-expanded="false" aria-controls="faq-3">Is there placement support?</button><div class="accordion-panel" id="faq-3" hidden>Yes — mock interviews, resume reviews and referrals.</div></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="modal-section">
+    <div class="card-header"><div><h2>Modal, Toast &amp; Tooltip</h2><p>HTML overlays that are part of the page (not browser dialogs).</p></div></div>
+    <div class="card-body">
+      <div class="row">
+        <button type="button" class="btn btn-danger" id="deleteAccountBtn">Delete account</button>
+        <button type="button" class="btn btn-secondary" id="successToastBtn">Show success toast</button>
+        <button type="button" class="btn btn-secondary" id="errorToastBtn">Show error toast</button>
+        <span class="tooltip-wrap" id="tooltipWrap"><button type="button" class="btn btn-ghost" id="tooltipBtn" aria-describedby="tooltipText">Hover for tooltip</button><span class="tooltip" role="tooltip" id="tooltipText">Tooltips appear on hover or focus</span></span>
+        <button type="button" class="btn btn-ghost" id="titleTooltipBtn" title="I am a native title tooltip">Native title tooltip</button>
+      </div>
+      <p id="modalStatus" class="result-text mt-1"></p>
+    </div>
+  </section>
+
+  <section class="card" id="menus-section">
+    <div class="card-header"><div><h2>Menus</h2><p>A click-to-open actions menu and a multi-level hover menu.</p></div></div>
+    <div class="card-body">
+      <div class="row" style="align-items:flex-start;gap:28px">
+        <div class="user-menu">
+          <button type="button" class="btn btn-secondary" id="actionsMenuBtn" aria-haspopup="true" aria-expanded="false">Actions ▾</button>
+          <div class="dropdown-menu" id="actionsMenu" role="menu" style="left:0;right:auto">
+            <button type="button" role="menuitem" data-action="Edit">Edit</button>
+            <button type="button" role="menuitem" data-action="Duplicate">Duplicate</button>
+            <button type="button" role="menuitem" data-action="Archive">Archive</button>
+            <div class="divider"></div>
+            <button type="button" role="menuitem" data-action="Delete" style="color:var(--danger)">Delete</button>
+          </div>
+        </div>
+        <nav class="menu-bar" id="hoverMenuBar" aria-label="Courses menu">
+          <div class="menu-item" id="menu-courses">
+            <button type="button" class="btn btn-secondary">Courses ▾</button>
+            <div class="submenu">
+              <div class="menu-item" id="menu-ui"><a href="#" id="link-ui">UI Automation ›</a>
+                <div class="submenu">
+                  <a href="#" id="link-selenium" data-course="Selenium">Selenium</a>
+                  <a href="#" id="link-playwright" data-course="Playwright">Playwright</a>
+                  <a href="#" id="link-cypress" data-course="Cypress">Cypress</a>
+                </div>
+              </div>
+              <div class="menu-item" id="menu-apis"><a href="#" id="link-api">API Automation ›</a>
+                <div class="submenu">
+                  <a href="#" id="link-postman" data-course="Postman">Postman</a>
+                  <a href="#" id="link-restassured" data-course="Rest Assured">Rest Assured</a>
+                </div>
+              </div>
+              <a href="#" id="link-manual" data-course="Manual Testing">Manual Testing</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <p id="menuResult" class="result-text mt-2"></p>
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="card" id="progress-section">
+      <div class="card-header"><h2>Progress Bar &amp; Spinner</h2></div>
+      <div class="card-body">
+        <div class="progress" role="progressbar" id="progressBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Download progress"><div class="progress-bar" id="progressFill"></div></div>
+        <div class="row mt-1" style="justify-content:space-between">
+          <span id="progressLabel" class="small muted">0%</span>
+          <div class="row"><button type="button" class="btn btn-primary btn-sm" id="startProgress">Start</button><button type="button" class="btn btn-secondary btn-sm" id="resetProgress">Reset</button></div>
+        </div>
+        <p id="progressDone" class="result-text"></p>
+        <hr>
+        <div class="row"><button type="button" class="btn btn-secondary" id="spinnerBtn">Save with spinner</button><span id="spinner" class="spinner hidden" aria-label="Loading"></span><span id="spinnerResult" class="result-text"></span></div>
+      </div>
+    </section>
+
+    <section class="card" id="carousel-section">
+      <div class="card-header"><h2>Carousel</h2><div class="row"><button type="button" class="btn btn-secondary btn-sm" id="carouselPrev" aria-label="Previous slide">‹ Prev</button><button type="button" class="btn btn-secondary btn-sm" id="carouselNext" aria-label="Next slide">Next ›</button></div></div>
+      <div class="card-body">
+        <div class="carousel" id="carousel" aria-roledescription="carousel">
+          <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-slide" data-index="0" style="background:linear-gradient(135deg,#059669,#0ea5e9)">Slide 1: Selenium</div>
+            <div class="carousel-slide" data-index="1" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">Slide 2: Playwright</div>
+            <div class="carousel-slide" data-index="2" style="background:linear-gradient(135deg,#d97706,#dc2626)">Slide 3: Cypress</div>
+            <div class="carousel-slide" data-index="3" style="background:linear-gradient(135deg,#0f172a,#334155)">Slide 4: Postman</div>
+          </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <p class="small muted mt-1" style="text-align:center">Current: <b id="currentSlide">Slide 1: Selenium</b></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" id="rating-section">
+      <div class="card-header"><h2>Star Rating &amp; Tags Input</h2></div>
+      <div class="card-body">
+        <div class="form-label">Rate this course</div>
+        <div class="rating" id="starRating" role="radiogroup" aria-label="Rating">
+          <button type="button" data-value="1" aria-label="1 star" id="star-1">★</button>
+          <button type="button" data-value="2" aria-label="2 stars" id="star-2">★</button>
+          <button type="button" data-value="3" aria-label="3 stars" id="star-3">★</button>
+          <button type="button" data-value="4" aria-label="4 stars" id="star-4">★</button>
+          <button type="button" data-value="5" aria-label="5 stars" id="star-5">★</button>
+        </div>
+        <p id="ratingResult" class="small muted">No rating yet</p>
+        <hr>
+        <label class="form-label" for="tagInput">Skills (type and press Enter)</label>
+        <div class="chips" id="tagsBox"><input id="tagInput" placeholder="e.g. Selenium" aria-label="Add a tag"></div>
+        <p class="small muted mt-1">Tags: <span id="tagsValue">none</span></p>
+      </div>
+    </section>
+
+    <section class="card" id="misc-section">
+      <div class="card-header"><h2>Counter, Clipboard &amp; Badges</h2></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="form-label mb-0">Quantity</span>
+          <div class="qty" id="quantityStepper"><button type="button" id="qtyMinus" aria-label="Decrease">−</button><input id="qtyValue" value="1" aria-label="Quantity" inputmode="numeric"><button type="button" id="qtyPlus" aria-label="Increase">+</button></div>
+          <span class="small muted">(min 1, max 10)</span>
+        </div>
+        <hr>
+        <label class="form-label" for="couponCode">Copy this coupon</label>
+        <div class="input-group" style="max-width:340px"><input id="couponCode" class="form-control" value="ROHIT-QA-50" readonly><button type="button" class="btn btn-primary" id="copyCouponBtn">Copy</button></div>
+        <p id="copyResult" class="result-text mt-1"></p>
+        <hr>
+        <div class="row" id="badgeRow">
+          <span class="badge badge-success">Passed</span><span class="badge badge-danger">Failed</span><span class="badge badge-warning">Skipped</span><span class="badge badge-info">Running</span>
+          <span class="badge" id="notificationBadge">Notifications <b id="notificationCount">3</b></span>
+          <button type="button" class="btn btn-ghost btn-sm" id="clearNotifications">Mark all read</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- confirm modal -->
+  <div class="overlay" id="confirmOverlay"></div>
+  <div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" style="width:min(440px,calc(100vw - 32px))">
+    <div class="modal-header"><h3 id="confirmTitle">Delete account?</h3></div>
+    <div class="modal-body"><p class="muted mb-0">This action cannot be undone. Type <b>DELETE</b> to confirm.</p><input id="confirmInput" class="form-control mt-1" placeholder="Type DELETE" aria-label="Type DELETE to confirm"></div>
+    <div class="modal-footer"><button type="button" class="btn btn-secondary" id="confirmCancel">Cancel</button><button type="button" class="btn btn-danger" id="confirmDelete" disabled>Delete</button></div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Contact Us | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+</head>
+<body data-page="contact" data-title="Contact">
+<main class="content" id="content">
+  <div class="page-header"><div><h1>Contact Us</h1><p>Questions about training or the practice site? Send us a message.</p></div></div>
+  <div class="grid-2" style="grid-template-columns: 1.4fr 1fr">
+    <section class="card">
+      <div class="card-header"><h2>Get in Touch</h2></div>
+      <div class="card-body">
+        <div id="contactSuccess" class="alert alert-success hidden" role="alert"></div>
+        <form id="contactForm" novalidate>
+          <div class="grid-2" style="gap:14px">
+            <div class="form-group"><label class="form-label" for="name">Name <span class="req">*</span></label><input type="text" id="name" name="name" class="form-control" placeholder="Your name"><div class="invalid-feedback" id="name-error"></div></div>
+            <div class="form-group"><label class="form-label" for="email">Email <span class="req">*</span></label><input type="email" id="email" name="email" class="form-control" placeholder="you@example.com"><div class="invalid-feedback" id="email-error"></div></div>
+          </div>
+          <div class="grid-2" style="gap:14px">
+            <div class="form-group"><label class="form-label" for="phone">Phone</label><input type="tel" id="phone" name="phone" class="form-control" placeholder="10-digit mobile number" maxlength="10"><div class="invalid-feedback" id="phone-error"></div></div>
+            <div class="form-group"><label class="form-label" for="topic">Topic</label>
+              <select id="topic" name="topic" class="form-select">
+                <option value="general">General question</option>
+                <option value="training">Training / course enquiry</option>
+                <option value="bug">Report a bug on this site</option>
+                <option value="other">Other</option>
+              </select></div>
+          </div>
+          <div class="form-group"><label class="form-label" for="subject">Subject <span class="req">*</span></label><input type="text" id="subject" name="subject" class="form-control" placeholder="What is this about?"><div class="invalid-feedback" id="subject-error"></div></div>
+          <div class="form-group"><label class="form-label" for="message">Message <span class="req">*</span></label><textarea id="message" name="message" rows="5" class="form-control" maxlength="500" placeholder="Write your message (at least 10 characters)"></textarea><div class="form-hint"><span id="messageCount">0</span>/500</div><div class="invalid-feedback" id="message-error"></div></div>
+          <fieldset><legend>Preferred contact method</legend>
+            <label class="check"><input type="radio" name="contactMethod" id="methodEmail" value="email" checked> Email</label>
+            <label class="check"><input type="radio" name="contactMethod" id="methodPhone" value="phone"> Phone</label>
+            <label class="check"><input type="radio" name="contactMethod" id="methodWhatsapp" value="whatsapp"> WhatsApp</label>
+          </fieldset>
+          <label class="check mb-2" for="newsletter"><input type="checkbox" id="newsletter" name="newsletter"> Send me updates about new batches</label>
+          <div><button type="submit" class="btn btn-primary" id="sendMessage">Send Message</button></div>
+        </form>
+      </div>
+    </section>
+    <aside>
+      <section class="card"><div class="card-body">
+        <h3>Reach us directly</h3>
+        <p class="muted">Email: <a href="mailto:mail2sinharohit@gmail.com" id="directEmail">mail2sinharohit@gmail.com</a></p>
+        <p class="muted">Training email: <a href="mailto:rohitautomation@gmail.com">rohitautomation@gmail.com</a></p>
+        <hr>
+        <h3>Office hours</h3>
+        <table class="table" id="officeHours"><tbody>
+          <tr><td>Mon – Fri</td><td>9:00 AM – 7:00 PM IST</td></tr>
+          <tr><td>Saturday</td><td>10:00 AM – 2:00 PM IST</td></tr>
+          <tr><td>Sunday</td><td>Closed</td></tr>
+        </tbody></table>
+      </div></section>
+    </aside>
+  </div>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (id) => document.getElementById(id);
+  const form = $("contactForm");
+  $("message").addEventListener("input", (e) => ($("messageCount").textContent = e.target.value.length));
+  ["name", "email", "phone", "subject", "message"].forEach((f) => $(f).addEventListener("input", () => { $(f).classList.remove("is-invalid"); $(f + "-error").textContent = ""; }));
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let ok = true;
+    const err = (f, t) => { $(f).classList.add("is-invalid"); $(f + "-error").textContent = t; ok = false; };
+    const v = (f) => $(f).value.trim();
+    if (!v("name")) err("name", "Name is required");
+    if (!v("email")) err("email", "Email is required");
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email"))) err("email", "Please enter a valid email address");
+    if (v("phone") && !/^\d{10}$/.test(v("phone"))) err("phone", "Phone number must be exactly 10 digits");
+    if (!v("subject")) err("subject", "Subject is required");
+    if (v("message").length < 10) err("message", "Message must be at least 10 characters");
+    if (!ok) return;
+    const ticket = "TKT-" + Math.floor(100000 + Math.random() * 900000);
+    $("contactSuccess").innerHTML = "Thank you, <b>" + App.escapeHtml(v("name")) + "</b>! Your message has been sent. Reference: <span id='ticketId'>" + ticket + "</span>";
+    $("contactSuccess").classList.remove("hidden");
+    form.reset();
+    $("messageCount").textContent = "0";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | Automation With Rohit</title>
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/store.js" defer></script>
+</head>
+<body data-page="store" data-title="Shop">
+<main class="content" id="content">
+  <div class="page-header">
+    <div><h1 id="shop-title">Products</h1><p>Search, filter, sort and add products to your cart. The catalogue is served by <code>GET /api/products</code>.</p></div>
+    <a href="/store/cart.html" class="btn btn-secondary" id="cartLink" data-testid="shopping-cart-link" style="position:relative">
+      Cart <span class="cart-badge hidden" id="cartBadge" data-cart-count data-testid="shopping-cart-badge">0</span>
+    </a>
+  </div>
+
+  <div class="card"><div class="card-body table-toolbar mb-0" style="margin:0">
+    <input type="search" id="productSearch" class="form-control" placeholder="Search products" style="max-width:240px" aria-label="Search products">
+    <select id="categoryFilter" class="form-select" style="max-width:180px" aria-label="Category">
+      <option value="">All categories</option>
+    </select>
+    <select id="sortProducts" class="form-select product_sort_container" style="max-width:200px" aria-label="Sort products" data-testid="product-sort">
+      <option value="az">Name (A to Z)</option>
+      <option value="za">Name (Z to A)</option>
+      <option value="lohi">Price (low to high)</option>
+      <option value="hilo">Price (high to low)</option>
+      <option value="rating">Top rated</option>
+    </select>
+    <label class="check" for="inStockOnly"><input type="checkbox" id="inStockOnly"> In stock only</label>
+    <span class="small muted" id="resultCount" style="margin-left:auto"></span>
+  </div></div>
+
+  <div id="productsStatus" class="empty-state">Loading products...</div>
+  <div class="product-grid" id="productGrid" data-testid="inventory-list"></div>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const $ = (id) => document.getElementById(id);
+  const all = await Store.products();
+  const cats = [...new Set(all.map((p) => p.category))].sort();
+  $("categoryFilter").innerHTML += cats.map((c) => `<option value="${c}">${c}</option>`).join("");
+
+  const params = new URLSearchParams(location.search);
+  if (params.get("category")) $("categoryFilter").value = params.get("category");
+
+  function inCart(id) { return App.cart.items().some((i) => i.id === id); }
+
+  function render() {
+    const q = $("productSearch").value.toLowerCase().trim();
+    const cat = $("categoryFilter").value;
+    let list = all.filter((p) => (!q || p.name.toLowerCase().includes(q)) && (!cat || p.category === cat) && (!$("inStockOnly").checked || p.stock > 0));
+    const sorters = {
+      az: (a, b) => a.name.localeCompare(b.name), za: (a, b) => b.name.localeCompare(a.name),
+      lohi: (a, b) => a.price - b.price, hilo: (a, b) => b.price - a.price, rating: (a, b) => b.rating - a.rating,
+    };
+    list.sort(sorters[$("sortProducts").value]);
+    $("resultCount").textContent = `${list.length} product${list.length === 1 ? "" : "s"}`;
+    $("productsStatus").classList.toggle("hidden", list.length > 0);
+    $("productsStatus").textContent = "No products match your filters.";
+    $("productGrid").innerHTML = list.map((p) => {
+      const s = Store.slug(p.name);
+      const out = p.stock === 0;
+      const added = inCart(p.id);
+      return `
+      <article class="card product-card inventory_item" data-testid="product-card" data-product-id="${p.id}">
+        <a href="/store/product.html?id=${p.id}" id="item-${p.id}-img-link"><img src="${p.image}" alt="${App.escapeHtml(p.name)}" loading="lazy"></a>
+        <div class="body">
+          <div class="row" style="justify-content:space-between"><span class="badge">${p.category}</span>${out ? '<span class="badge badge-danger stock-badge">Out of stock</span>' : `<span class="small muted">${p.stock} left</span>`}</div>
+          <a href="/store/product.html?id=${p.id}" class="name inventory_item_name" id="item-${p.id}-title-link" data-testid="product-name">${App.escapeHtml(p.name)}</a>
+          <div>${Store.stars(p.rating)}</div>
+          <p class="small muted mb-0 inventory_item_desc">${App.escapeHtml(p.description)}</p>
+          <div class="actions">
+            <span class="price inventory_item_price" data-testid="product-price">${App.money(p.price)}</span>
+            <span style="flex:1"></span>
+            ${out
+              ? `<button type="button" class="btn btn-secondary btn-sm" disabled id="add-to-cart-${s}" data-testid="add-to-cart-${s}">Add to cart</button>`
+              : added
+                ? `<button type="button" class="btn btn-outline btn-sm" id="remove-${s}" data-testid="remove-${s}" data-action="remove" data-id="${p.id}">Remove</button>`
+                : `<button type="button" class="btn btn-primary btn-sm" id="add-to-cart-${s}" data-testid="add-to-cart-${s}" data-action="add" data-id="${p.id}">Add to cart</button>`}
+          </div>
+        </div>
+      </article>`;
+    }).join("");
+  }
+
+  $("productGrid").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const p = all.find((x) => x.id === Number(btn.dataset.id));
+    if (btn.dataset.action === "add") { App.cart.add(p, 1); App.toast(`${p.name} added to cart`); }
+    else { App.cart.remove(p.id); App.toast(`${p.name} removed from cart`, "info"); }
+    render();
+  });
+  ["productSearch", "categoryFilter", "sortProducts", "inStockOnly"].forEach((id) => $(id).addEventListener(id === "productSearch" ? "input" : "change", render));
+  render();
+});
+</script>
+</body>
+</html>

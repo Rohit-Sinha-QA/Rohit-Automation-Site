@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>About | Automation With Rohit</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="/icon.jpg">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("rohit.theme")||"light"}catch(e){}</script>
+  <script src="/assets/js/app.js" defer></script>
+</head>
+<body data-page="about" data-title="About">
+<main class="content" id="content">
+  <div class="page-header"><div><h1>About Automation With Rohit</h1><p>A realistic practice application for learning UI and API test automation.</p></div></div>
+  <section class="card"><div class="card-body">
+    <p>This site was built for students learning test automation with Rohit Sinha. Every page is designed to look and behave like a real product, while keeping locators simple and predictable so you can focus on learning the tool.</p>
+    <p>All elements are standard HTML, so the same page can be automated with <b>Selenium</b> (Java, Python, C#), <b>Cypress</b>, <b>Playwright</b>, <b>WebdriverIO</b> or <b>Robot Framework</b>. The REST API can be tested with <b>Postman</b>, <b>Rest Assured</b>, <b>Playwright APIRequestContext</b> or Python <b>requests</b>.</p>
+  </div></section>
+  <div class="grid-3">
+    <section class="card"><div class="card-body"><h3>What you can practise</h3><ul class="muted" id="practiceTopics" style="padding-left:18px;margin:0">
+      <li>Locators: id, name, CSS, XPath, text, role, label, test-id</li><li>Forms, dropdowns, checkboxes, radios, uploads</li><li>Alerts, frames, tabs and windows</li><li>Waits, dynamic content and AJAX</li><li>Web tables, pagination, sorting</li><li>E-commerce flow: shop, cart, checkout</li><li>REST API: GET, POST, PUT, PATCH, DELETE</li></ul></div></section>
+    <section class="card"><div class="card-body"><h3>Locator conventions</h3><ul class="muted" style="padding-left:18px;margin:0">
+      <li>Important elements have a readable <code>id</code></li><li>Form fields have a <code>name</code> and a real <code>&lt;label&gt;</code></li><li>Key elements have a <code>data-testid</code></li><li>Buttons and links have clear visible text</li><li>Only the "Dynamic Xpath" field changes its id on purpose</li></ul></div></section>
+    <section class="card"><div class="card-body"><h3>Running locally</h3><p class="muted">Install Node.js 18+, open the project folder and run:</p><pre class="code-block">node server.js</pre><p class="muted mt-1">Then open <code>http://localhost:3000</code>. No other installs needed.</p></div></section>
+  </div>
+</main>
+</body>
+</html>
